@@ -21,7 +21,7 @@ public abstract class BaseDomain<T extends Serializable> implements Serializable
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID T;
+    private UUID id;
 
     @CreatedBy
     @Column(name = "created_by", updatable = false)
