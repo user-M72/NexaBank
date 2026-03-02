@@ -17,4 +17,6 @@ public interface UserService {
     UserResponseDto updated(UUID id, UserRequestDto dto);
 
     void deleted(UUID id);
+
+    boolean existsByEmail(String email);
 }
