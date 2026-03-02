@@ -1,13 +1,15 @@
 package BankApp.SpringBank.controller;
 
+import BankApp.SpringBank.dto.req.RoleRequestDto;
 import BankApp.SpringBank.dto.res.RoleResponseDto;
 import BankApp.SpringBank.service.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +21,28 @@ public class RoleApi {
     @GetMapping
     public List<RoleResponseDto> get(){
         return service.get();
+    }
+
+    @GetMapping("/{roleId}")
+    public RoleResponseDto getById(@PathVariable("roleId")UUID id){
+        return service.getById(id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<RoleResponseDto> created(@RequestParam RoleRequestDto dto){
+        RoleResponseDto created = service.created(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PutMapping("/{roleId}")
+    public RoleResponseDto updated(@RequestParam("roleId") UUID id,
+                                   @RequestParam RoleRequestDto dto){
+        return service.updated(id, dto);
+    }
+
+    @DeleteMapping("/{roleId}")
+    public ResponseEntity<Void> deleted(@PathVariable("roleId") UUID id){
+        service.deleted(id);
+        return ResponseEntity.ok().build();
     }
 }
