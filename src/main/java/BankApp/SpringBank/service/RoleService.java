@@ -21,4 +21,8 @@ public interface RoleService {
     void deleted(UUID id);
 
     Set<Role> geyByIdList(List<UUID> id);
+
+    boolean existsByName(String admin);
+
+    Role getByName(String admin);
 }

@@ -2,6 +2,7 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.RoleRequestDto;
 import BankApp.SpringBank.dto.res.RoleResponseDto;
+import BankApp.SpringBank.exception.AdminNotFoundException;
 import BankApp.SpringBank.exception.RoleNotFoundException;
 import BankApp.SpringBank.exception.UserNotFoundException;
 import BankApp.SpringBank.mapper.RoleMapper;
@@ -66,5 +67,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Set<Role> geyByIdList(List<UUID> id) {
         return new HashSet<>(repository.findAllById(id));
+    }
+
+    @Override
+    public boolean existsByName(String admin) {
+        return repository.existsByName(admin);
+    }
+
+    @Override
+    public Role getByName(String admin) {
+        return repository.findByName(admin)
+                .orElseThrow(()-> new AdminNotFoundException(admin));
     }
 }
