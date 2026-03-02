@@ -1,15 +1,14 @@
 package BankApp.SpringBank.dto.req;
 
-import BankApp.SpringBank.model.Enum.RoleEnum;
-
-import java.util.Set;
+import java.util.List;
+import java.util.UUID;
 
 public record UserRequestDto(
 
-        String FirstName,
-        String LastName,
+        String firstName,
+        String lastName,
         String username,
         String email,
         String password,
-        Set<RoleEnum> roles
+        List<UUID> roleId
 ) {}

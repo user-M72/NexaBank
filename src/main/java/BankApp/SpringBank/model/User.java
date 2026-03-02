@@ -1,6 +1,5 @@
 package BankApp.SpringBank.model;
 
-import BankApp.SpringBank.model.Enum.RoleEnum;
 import BankApp.SpringBank.model.baseDomain.BaseDomain;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,11 +14,11 @@ import java.util.UUID;
 @Setter
 public class User extends BaseDomain<UUID> {
 
-    @Column(name = "FirstName", nullable = false, length = 30)
-    private String FirstName;
+    @Column(name = "firstName", nullable = false, length = 30)
+    private String firstName;
 
-    @Column(name = "LastName", nullable = false, length = 30)
-    private String LastName;
+    @Column(name = "lastName", nullable = false, length = 30)
+    private String lastName;
 
     @Column(name = "username", nullable = false, length = 30)
     private String username;
@@ -35,5 +34,5 @@ public class User extends BaseDomain<UUID> {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
-    private Set<RoleEnum> roles;
+    private Set<Role> roles;
 }
