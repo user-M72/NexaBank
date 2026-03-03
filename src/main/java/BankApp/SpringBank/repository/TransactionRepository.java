@@ -1,8 +1,9 @@
 package BankApp.SpringBank.repository;
 
+import BankApp.SpringBank.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface TransactionRepository extends JpaRepository<TransactionRepository, UUID> {
+public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 }
