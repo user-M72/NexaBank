@@ -29,14 +29,14 @@ public class RoleApi {
     }
 
     @PostMapping()
-    public ResponseEntity<RoleResponseDto> created(@RequestParam RoleRequestDto dto){
+    public ResponseEntity<RoleResponseDto> created(@RequestBody RoleRequestDto dto){
         RoleResponseDto created = service.created(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{roleId}")
-    public RoleResponseDto updated(@RequestParam("roleId") UUID id,
-                                   @RequestParam RoleRequestDto dto){
+    public RoleResponseDto updated(@PathVariable("roleId") UUID id,
+                                   @RequestBody RoleRequestDto dto){
         return service.updated(id, dto);
     }
 
