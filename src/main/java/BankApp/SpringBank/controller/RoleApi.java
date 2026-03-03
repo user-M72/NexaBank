@@ -1,7 +1,7 @@
 package BankApp.SpringBank.controller;
 
-import BankApp.SpringBank.dto.req.RoleRequestDto;
-import BankApp.SpringBank.dto.res.RoleResponseDto;
+import BankApp.SpringBank.dto.req.role.RoleRequestDto;
+import BankApp.SpringBank.dto.res.role.RoleResponseDto;
 import BankApp.SpringBank.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

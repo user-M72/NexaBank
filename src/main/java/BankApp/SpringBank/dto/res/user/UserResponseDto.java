@@ -1,4 +1,6 @@
-package BankApp.SpringBank.dto.res;
+package BankApp.SpringBank.dto.res.user;
+
+import BankApp.SpringBank.dto.res.role.RoleResponseDto;
 
 import java.util.Set;
 import java.util.UUID;

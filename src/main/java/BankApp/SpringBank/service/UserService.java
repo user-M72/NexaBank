@@ -1,7 +1,7 @@
 package BankApp.SpringBank.service;
 
-import BankApp.SpringBank.dto.req.UserRequestDto;
-import BankApp.SpringBank.dto.res.UserResponseDto;
+import BankApp.SpringBank.dto.req.user.UserRequestDto;
+import BankApp.SpringBank.dto.res.user.UserResponseDto;
 
 import java.util.List;
 import java.util.UUID;

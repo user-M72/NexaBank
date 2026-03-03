@@ -1,4 +1,4 @@
-package BankApp.SpringBank.dto.req;
+package BankApp.SpringBank.dto.req.role;
 
 public record RoleRequestDto(
 

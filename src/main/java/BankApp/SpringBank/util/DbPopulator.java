@@ -1,7 +1,7 @@
 package BankApp.SpringBank.util;
 
-import BankApp.SpringBank.dto.req.RoleRequestDto;
-import BankApp.SpringBank.dto.req.UserRequestDto;
+import BankApp.SpringBank.dto.req.role.RoleRequestDto;
+import BankApp.SpringBank.dto.req.user.UserRequestDto;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.service.RoleService;
 import BankApp.SpringBank.service.UserService;

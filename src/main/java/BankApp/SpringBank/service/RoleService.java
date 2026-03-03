@@ -1,7 +1,7 @@
 package BankApp.SpringBank.service;
 
-import BankApp.SpringBank.dto.req.RoleRequestDto;
-import BankApp.SpringBank.dto.res.RoleResponseDto;
+import BankApp.SpringBank.dto.req.role.RoleRequestDto;
+import BankApp.SpringBank.dto.res.role.RoleResponseDto;
 import BankApp.SpringBank.model.Role;
 
 import java.util.List;

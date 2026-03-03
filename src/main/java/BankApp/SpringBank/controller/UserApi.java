@@ -1,8 +1,7 @@
 package BankApp.SpringBank.controller;
 
-import BankApp.SpringBank.dto.req.UserRequestDto;
-import BankApp.SpringBank.dto.res.UserResponseDto;
-import BankApp.SpringBank.model.User;
+import BankApp.SpringBank.dto.req.user.UserRequestDto;
+import BankApp.SpringBank.dto.res.user.UserResponseDto;
 import BankApp.SpringBank.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

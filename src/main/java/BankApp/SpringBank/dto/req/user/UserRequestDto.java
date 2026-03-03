@@ -1,4 +1,4 @@
-package BankApp.SpringBank.dto.req;
+package BankApp.SpringBank.dto.req.user;
 
 import java.util.List;
 import java.util.UUID;

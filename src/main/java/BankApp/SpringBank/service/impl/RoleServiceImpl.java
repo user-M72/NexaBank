@@ -1,10 +1,9 @@
 package BankApp.SpringBank.service.impl;
 
-import BankApp.SpringBank.dto.req.RoleRequestDto;
-import BankApp.SpringBank.dto.res.RoleResponseDto;
+import BankApp.SpringBank.dto.req.role.RoleRequestDto;
+import BankApp.SpringBank.dto.res.role.RoleResponseDto;
 import BankApp.SpringBank.exception.AdminNotFoundException;
 import BankApp.SpringBank.exception.RoleNotFoundException;
-import BankApp.SpringBank.exception.UserNotFoundException;
 import BankApp.SpringBank.mapper.RoleMapper;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.repository.RoleRepository;
