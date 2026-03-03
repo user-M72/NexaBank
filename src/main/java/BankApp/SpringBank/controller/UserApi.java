@@ -1,13 +1,16 @@
 package BankApp.SpringBank.controller;
 
+import BankApp.SpringBank.dto.req.UserRequestDto;
 import BankApp.SpringBank.dto.res.UserResponseDto;
+import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +22,28 @@ public class UserApi {
     @GetMapping
     public List<UserResponseDto> get(){
         return service.get();
+    }
+
+    @GetMapping("/{userId}")
+    public UserResponseDto getById(@PathVariable("userId")UUID id){
+        return service.getById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDto> created(@RequestBody UserRequestDto dto){
+        UserResponseDto created = service.created(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PutMapping("/{userId}")
+    public UserResponseDto updated(@PathVariable("userId") UUID id,
+                                   @RequestBody UserRequestDto dto){
+        return service.updated(id, dto);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleted(@PathVariable("userId") UUID id){
+         service.deleted(id);
+         return ResponseEntity.ok().build();
     }
 }
