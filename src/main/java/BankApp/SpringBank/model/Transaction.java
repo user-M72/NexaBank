@@ -3,8 +3,7 @@ package BankApp.SpringBank.model;
 import BankApp.SpringBank.model.Enum.TransactionStatus;
 import BankApp.SpringBank.model.Enum.TransactionType;
 import BankApp.SpringBank.model.baseDomain.BaseDomain;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +16,28 @@ import java.util.UUID;
 @Setter
 public class Transaction extends BaseDomain<UUID> {
 
+    @Column(name = "amount", nullable = false, length = 30)
     private BigDecimal amount;
+
+    @Column(name = "type", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
+
+    @Column(name = "status", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
     private TransactionStatus status;
+
+    @Column(name = "description", nullable = false, length = 50)
     private String description;
+
+    @Column(name = "referenceNumber", nullable = false, length = 30)
     private String referenceNumber;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_account_id")
+    private Account fromAccount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_account_id")
+    private Account toAccount;
 }
