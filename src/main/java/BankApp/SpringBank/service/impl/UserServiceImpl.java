@@ -2,6 +2,7 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.user.UserRequestDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
+import BankApp.SpringBank.exception.AccountNotFoundException;
 import BankApp.SpringBank.exception.UserNotFoundException;
 import BankApp.SpringBank.mapper.UserMapper;
 import BankApp.SpringBank.model.Role;
@@ -78,5 +79,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
+    }
+
+    @Override
+    public User findById(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException(id));
     }
 }
