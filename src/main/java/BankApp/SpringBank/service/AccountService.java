@@ -3,6 +3,7 @@ package BankApp.SpringBank.service;
 import BankApp.SpringBank.dto.req.account.AccountRequestDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,4 +18,12 @@ public interface AccountService {
     AccountResponseDto updated(UUID id, AccountRequestDto dto);
 
     void deleted(UUID id);
+
+    AccountResponseDto deposit(UUID id, BigDecimal amount);
+
+    AccountResponseDto withdraw(UUID id, BigDecimal amount);
+
+    void block(UUID id);
+
+    void unblock(UUID id);
 }

@@ -2,17 +2,23 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.account.AccountRequestDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
+import BankApp.SpringBank.exception.AccountBlockedException;
+import BankApp.SpringBank.exception.AccountNotBlockedException;
 import BankApp.SpringBank.exception.AccountNotFoundException;
+import BankApp.SpringBank.exception.InsufficientFundsException;
 import BankApp.SpringBank.mapper.AccountMapper;
+import BankApp.SpringBank.model.Account;
+import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.repository.AccountRepository;
 import BankApp.SpringBank.service.AccountService;
 import BankApp.SpringBank.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +27,11 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final UserService userService;
     private final AccountMapper mapper;
+
+    private Account AccountFindById(UUID id){
+        return accountRepository.findById(id)
+                .orElseThrow(()-> new AccountNotFoundException(id));
+    }
 
     @Override
     public List<AccountResponseDto> get() {
@@ -32,17 +43,30 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDto getById(UUID id) {
-        return null;
+        Account account = AccountFindById(id);
+        return mapper.toDto(account);
     }
 
     @Override
     public AccountResponseDto created(AccountRequestDto dto) {
-        return null;
+        User user = userService.findById(dto.userId());
+
+        String accountNumber = "ACC-" + UUID.randomUUID().toString().substring(0,8).toUpperCase();
+
+        Account account = mapper.toEntity(dto, user, accountNumber);
+
+        Account save = accountRepository.save(account);
+        return mapper.toDto(save);
+
     }
 
     @Override
     public AccountResponseDto updated(UUID id, AccountRequestDto dto) {
-        return null;
+        Account account = AccountFindById(id);
+        mapper.updateFromDto(dto, account);
+        Account saved = accountRepository.save(account);
+        return mapper.toDto(saved);
+
     }
 
     @Override
@@ -50,5 +74,60 @@ public class AccountServiceImpl implements AccountService {
         if (!accountRepository.existsById(id))
             throw new AccountNotFoundException(id);
         accountRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public AccountResponseDto deposit(UUID id, BigDecimal amount) {
+        Account account = AccountFindById(id);
+        if (account.isBlocked()){
+            throw new AccountBlockedException(id);
+        }
+
+        account.setBalance(account.getBalance().add(amount));
+        Account saved = accountRepository.save(account);
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    @Transactional
+    public AccountResponseDto withdraw(UUID id, BigDecimal amount) {
+        Account account = AccountFindById(id);
+
+        if (account.isBlocked()){
+            throw new AccountBlockedException(id);
+        }
+
+        if (account.getBalance().compareTo(amount) < 0){
+            throw new InsufficientFundsException(account.getBalance(), amount);
+        }
+
+        account.setBalance(account.getBalance().subtract(amount));
+        Account saved = accountRepository.save(account);
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    public void block(UUID id) {
+        Account account = AccountFindById(id);
+
+        if (account.isBlocked()){
+            throw new AccountBlockedException(id);
+        }
+
+        account.setBlocked(true);
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void unblock(UUID id) {
+        Account account = AccountFindById(id);
+
+        if (!account.isBlocked()){
+            throw new AccountNotBlockedException(id);
+        }
+
+        account.setBlocked(false);
+        accountRepository.save(account);
     }
 }
