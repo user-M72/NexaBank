@@ -2,10 +2,7 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.account.AccountRequestDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
-import BankApp.SpringBank.exception.AccountBlockedException;
-import BankApp.SpringBank.exception.AccountNotBlockedException;
-import BankApp.SpringBank.exception.AccountNotFoundException;
-import BankApp.SpringBank.exception.InsufficientFundsException;
+import BankApp.SpringBank.exception.*;
 import BankApp.SpringBank.mapper.AccountMapper;
 import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.User;
@@ -76,6 +73,23 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDto deposit(UUID id, BigDecimal amount) {
         Account account = findById(id);
         checkAccountBlock(account);
+        switch (account.getType()){
+            case CHECKING -> {
+                //No limits - any amount
+            }
+
+            case SAVINGS -> {
+                if (amount.compareTo(BigDecimal.valueOf(100)) < 0){
+                    throw new InvalidAmountException("Minimum deposit amount for savings account: 100");
+                }
+            }
+
+            case CREDIT -> {
+                if (account.getBalance().add(amount).compareTo(BigDecimal.ZERO) > 0){
+                    throw new InvalidAmountException("You can't put more into a credit account than the debt!");
+                }
+            }
+        }
         account.setBalance(account.getBalance().add(amount));
         Account saved = accountRepository.save(account);
         return mapper.toDto(saved);
@@ -87,8 +101,28 @@ public class AccountServiceImpl implements AccountService {
         Account account = findById(id);
         checkAccountBlock(account);
 
-        if (account.getBalance().compareTo(amount) < 0){
-            throw new InsufficientFundsException(account.getBalance(), amount);
+        switch (account.getType()){
+            case CHECKING -> {
+                if (account.getBalance().compareTo(amount) < 0){
+                    throw new InsufficientFundsException(account.getBalance(), amount);
+                }
+            }
+
+            case SAVINGS -> {
+                BigDecimal halfBalance = account.getBalance()
+                        .divide(BigDecimal.valueOf(2));
+
+                if (amount.compareTo(halfBalance) > 0){
+                    throw new InsufficientFundsException(account.getBalance(), amount);
+                }
+            }
+
+            case CREDIT -> {
+                BigDecimal creditLimit = BigDecimal.valueOf(-10000);
+                if (account.getBalance().subtract(amount).compareTo(creditLimit) < 0){
+                    throw new InsufficientFundsException(account.getBalance(), amount);
+                }
+            }
         }
 
         account.setBalance(account.getBalance().subtract(amount));
