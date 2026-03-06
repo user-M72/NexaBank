@@ -4,8 +4,7 @@ import BankApp.SpringBank.model.Enum.TransactionStatus;
 import BankApp.SpringBank.model.Enum.TransactionType;
 import BankApp.SpringBank.model.baseDomain.BaseDomain;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -14,6 +13,9 @@ import java.util.UUID;
 @Table(name = "transactions")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction extends BaseDomain<UUID> {
 
     @Column(name = "amount", nullable = false, length = 30)
