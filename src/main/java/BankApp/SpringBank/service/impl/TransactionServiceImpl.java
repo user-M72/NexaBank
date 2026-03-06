@@ -2,10 +2,7 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.transaction.TransactionRequestDto;
 import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
-import BankApp.SpringBank.exception.AccountBlockedException;
-import BankApp.SpringBank.exception.CannotCancelTransactionException;
-import BankApp.SpringBank.exception.InsufficientFundsException;
-import BankApp.SpringBank.exception.TransactionNotFoundException;
+import BankApp.SpringBank.exception.*;
 import BankApp.SpringBank.mapper.TransactionMapper;
 import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.Enum.TransactionStatus;
@@ -82,6 +79,10 @@ public class TransactionServiceImpl implements TransactionService {
         Account fromAccount = accountService.findById(fromId);
         Account toAccount = accountService.findById(toId);
 
+        if (fromAccount.getCurrency() != toAccount.getCurrency()){
+            throw new CurrencyMismatchException(fromAccount.getCurrency(), toAccount.getCurrency());
+        }
+
         Transaction transaction = Transaction.builder()
                 .amount(amount)
                 .type(TransactionType.TRANSFER)
@@ -117,7 +118,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .amount(amount)
                 .type(TransactionType.DEPOSIT)
                 .status(TransactionStatus.PENDING)
-                .fromAccount(account)
+                .toAccount(account)
                 .description("Deposit to " + accountId)
                 .referenceNumber(UUID.randomUUID().toString())
                 .build();
@@ -125,7 +126,7 @@ public class TransactionServiceImpl implements TransactionService {
         try {
             checkAccountNotBlocked(account);
             checkSufficientFunds(account, amount);
-            account.setBalance(account.getBalance().subtract(amount));
+            account.setBalance(account.getBalance().add(amount));
             transaction.setStatus(TransactionStatus.SUCCESS);
         } catch (Exception e) {
             transaction.setStatus(TransactionStatus.FAILED);
