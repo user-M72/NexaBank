@@ -28,17 +28,6 @@ public class AccountServiceImpl implements AccountService {
     private final UserService userService;
     private final AccountMapper mapper;
 
-    private Account accountFindById(UUID id){
-        return accountRepository.findById(id)
-                .orElseThrow(()-> new AccountNotFoundException(id));
-    }
-
-    private void checkAccountBlock(Account account){
-        if (account.isBlocked()){
-            throw new AccountBlockedException(account.getId());
-        }
-    }
-
     @Override
     public List<AccountResponseDto> get() {
         return accountRepository.findAll()
@@ -49,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDto getById(UUID id) {
-        Account account = accountFindById(id);
+        Account account = findById(id);
         return mapper.toDto(account);
     }
 
@@ -68,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDto updated(UUID id, AccountRequestDto dto) {
-        Account account = accountFindById(id);
+        Account account = findById(id);
         mapper.updateFromDto(dto, account);
         Account saved = accountRepository.save(account);
         return mapper.toDto(saved);
@@ -85,7 +74,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountResponseDto deposit(UUID id, BigDecimal amount) {
-        Account account = accountFindById(id);
+        Account account = findById(id);
         checkAccountBlock(account);
         account.setBalance(account.getBalance().add(amount));
         Account saved = accountRepository.save(account);
@@ -95,7 +84,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountResponseDto withdraw(UUID id, BigDecimal amount) {
-        Account account = accountFindById(id);
+        Account account = findById(id);
         checkAccountBlock(account);
 
         if (account.getBalance().compareTo(amount) < 0){
@@ -109,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void block(UUID id) {
-        Account account = accountFindById(id);
+        Account account = findById(id);
         checkAccountBlock(account);
         account.setBlocked(true);
         accountRepository.save(account);
@@ -117,7 +106,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void unblock(UUID id) {
-        Account account = accountFindById(id);
+        Account account = findById(id);
 
         if (!account.isBlocked()){
             throw new AccountNotBlockedException(id);
@@ -125,5 +114,17 @@ public class AccountServiceImpl implements AccountService {
 
         account.setBlocked(false);
         accountRepository.save(account);
+    }
+
+    @Override
+    public Account findById(UUID id) {
+        return accountRepository.findById(id)
+                .orElseThrow(()->new AccountNotFoundException(id));
+    }
+
+    private void checkAccountBlock(Account account){
+        if (account.isBlocked()){
+            throw new AccountBlockedException(account.getId());
+        }
     }
 }

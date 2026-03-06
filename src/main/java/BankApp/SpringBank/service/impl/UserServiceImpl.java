@@ -39,9 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getById(UUID id) {
-
-        User user = repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+        User user = findById(id);
         return mapper.toDto(user);
     }
 
@@ -50,16 +48,13 @@ public class UserServiceImpl implements UserService {
 
         Set<Role> roleSet = roleService.geyByIdList(dto.roleId());
         User user = mapper.toEntity(dto, roleSet, passwordEncoder.encode(dto.password()));
-
         User save = repository.save(user);
         return mapper.toDto(save);
     }
 
     @Override
     public UserResponseDto updated(UUID id, UserRequestDto dto) {
-        User user = repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-
+        User user = findById(id);
         Set<Role> roles = roleService.geyByIdList(dto.roleId());
 
         mapper.updateFromDto(dto, roles, user);

@@ -2,6 +2,7 @@ package BankApp.SpringBank.service;
 
 import BankApp.SpringBank.dto.req.account.AccountRequestDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
+import BankApp.SpringBank.model.Account;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface AccountService {
     void block(UUID id);
 
     void unblock(UUID id);
+
+    Account findById(UUID id);
 }
