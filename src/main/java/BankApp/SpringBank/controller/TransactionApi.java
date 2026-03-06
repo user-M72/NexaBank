@@ -46,4 +46,29 @@ public class TransactionApi {
         TransactionResponseDto transfer = service.transfer(dto.fromAccount(), dto.toAccount(), dto.amount());
         return ResponseEntity.status(HttpStatus.CREATED).body(transfer);
     }
+
+    @PostMapping("/deposit")
+    public ResponseEntity<TransactionResponseDto> deposit(@RequestBody TransactionRequestDto dto){
+        TransactionResponseDto deposit = service.deposit(dto.toAccountId(), dto.amount());
+        return ResponseEntity.status(HttpStatus.CREATED).body(deposit);
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<TransactionResponseDto> withdraw(@RequestBody TransactionRequestDto dto){
+        TransactionResponseDto withdraw = service.withdraw(dto.fromAccountId(), dto.amount());
+        return ResponseEntity.status(HttpStatus.CREATED).body(withdraw);
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<TransactionResponseDto> payment(@RequestBody TransactionRequestDto dto){
+        TransactionResponseDto payment = service.payment(dto.fromAccountId(), dto.amount(), dto.description());
+        return ResponseEntity.status(HttpStatus.CREATED).body(payment);
+    }
+
+    @PatchMapping("/{transactionId}/canceled")
+    public ResponseEntity<Void> cancel(@PathVariable("transactionId") UUID id){
+        service.canceled(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
