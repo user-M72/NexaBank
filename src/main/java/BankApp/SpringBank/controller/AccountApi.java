@@ -2,6 +2,7 @@ package BankApp.SpringBank.controller;
 
 import BankApp.SpringBank.dto.req.account.AccountRequestDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
+import BankApp.SpringBank.model.Enum.Currency;
 import BankApp.SpringBank.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -71,5 +72,10 @@ public class AccountApi {
     public ResponseEntity<Void> unblock(@PathVariable("accountId") UUID id){
         service.unblock(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/currency")
+    public Currency[] currencyType(){
+        return Currency.values();
     }
 }
