@@ -17,4 +17,8 @@ public interface CardService {
     CardResponseDto updated(UUID id, CardRequestDto dto);
 
     void deleted(UUID id);
+
+    void block(UUID id);
+
+    void unblock(UUID id);
 }
