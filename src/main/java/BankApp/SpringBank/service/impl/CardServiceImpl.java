@@ -5,9 +5,11 @@ import BankApp.SpringBank.dto.res.card.CardResponseDto;
 import BankApp.SpringBank.exception.CardBlockedException;
 import BankApp.SpringBank.exception.CardNotBlockedException;
 import BankApp.SpringBank.exception.CardNotFoundException;
+import BankApp.SpringBank.exception.InvalidCardTypeException;
 import BankApp.SpringBank.mapper.CardMapper;
 import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.Card;
+import BankApp.SpringBank.model.Enum.AccountType;
 import BankApp.SpringBank.repository.CardRepository;
 import BankApp.SpringBank.service.AccountService;
 import BankApp.SpringBank.service.CardService;
@@ -42,6 +44,22 @@ public class CardServiceImpl implements CardService {
     @Override
     public CardResponseDto created(CardRequestDto dto) {
         Account account = accountService.findById(dto.accountId());
+
+        switch (dto.cardType()){
+            case DEBIT -> {
+                if (account.getType() != AccountType.CHECKING){
+                    throw new InvalidCardTypeException("Debit card for current account only!");
+                }
+            }
+            case CREDIT -> {
+                if (account.getType() != AccountType.CREDIT){
+                    throw new InvalidCardTypeException("Кредитная карта только для кредитного счёта!");
+                }
+            }
+            case VIRTUAL -> {
+                /*The virtual card can be linked to any account*/
+            }
+        }
         String cardNumber = generateCardNumber();
         String cvvHash = generateCvv();
 
