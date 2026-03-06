@@ -3,6 +3,7 @@ package BankApp.SpringBank.service.impl;
 import BankApp.SpringBank.dto.req.transaction.TransactionRequestDto;
 import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
 import BankApp.SpringBank.exception.AccountBlockedException;
+import BankApp.SpringBank.exception.CannotCancelTransactionException;
 import BankApp.SpringBank.exception.InsufficientFundsException;
 import BankApp.SpringBank.exception.TransactionNotFoundException;
 import BankApp.SpringBank.mapper.TransactionMapper;
@@ -39,8 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionResponseDto getById(UUID id) {
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(()-> new TransactionNotFoundException(id));
+        Transaction transaction = findTransactionById(id);
         return mapper.toDto(transaction);
     }
 
@@ -82,24 +82,133 @@ public class TransactionServiceImpl implements TransactionService {
         Account fromAccount = accountService.findById(fromId);
         Account toAccount = accountService.findById(toId);
 
-        checkAccountNotBlocked(fromAccount);
-        checkSufficientFunds(fromAccount, amount);
-
-        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
-        toAccount.setBalance(toAccount.getBalance().add(amount));
-
         Transaction transaction = Transaction.builder()
                 .amount(amount)
                 .type(TransactionType.TRANSFER)
-                .status(TransactionStatus.SUCCESS)
+                .status(TransactionStatus.PENDING)
                 .fromAccount(fromAccount)
                 .toAccount(toAccount)
                 .description("Transfer from " + fromId + "to" + toId)
                 .referenceNumber(UUID.randomUUID().toString())
                 .build();
+        try {
+            checkAccountNotBlocked(fromAccount);
+            checkSufficientFunds(fromAccount, amount);
+
+            fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+            toAccount.setBalance(toAccount.getBalance().add(amount));
+
+            transaction.setStatus(TransactionStatus.SUCCESS);
+        } catch (Exception e) {
+            transaction.setStatus(TransactionStatus.FAILED);
+            transactionRepository.save(transaction);
+            throw e;
+        }
+        Transaction saved = transactionRepository.save(transaction);
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    @Transactional
+    public TransactionResponseDto deposit(UUID accountId, BigDecimal amount) {
+        Account account = accountService.findById(accountId);
+
+        Transaction transaction = Transaction.builder()
+                .amount(amount)
+                .type(TransactionType.DEPOSIT)
+                .status(TransactionStatus.PENDING)
+                .fromAccount(account)
+                .description("Deposit to " + accountId)
+                .referenceNumber(UUID.randomUUID().toString())
+                .build();
+
+        try {
+            checkAccountNotBlocked(account);
+            checkSufficientFunds(account, amount);
+            account.setBalance(account.getBalance().subtract(amount));
+            transaction.setStatus(TransactionStatus.SUCCESS);
+        } catch (Exception e) {
+            transaction.setStatus(TransactionStatus.FAILED);
+            transactionRepository.save(transaction);
+            throw e;
+        }
 
         Transaction saved = transactionRepository.save(transaction);
         return mapper.toDto(saved);
+    }
+
+    @Override
+    @Transactional
+    public TransactionResponseDto withdraw(UUID accountId, BigDecimal amount) {
+        Account account = accountService.findById(accountId);
+
+        Transaction transaction = Transaction.builder()
+                .amount(amount)
+                .type(TransactionType.WITHDRAWAL)
+                .status(TransactionStatus.PENDING)
+                .fromAccount(account)
+                .description("Withdrawal from " + accountId)
+                .referenceNumber(UUID.randomUUID().toString())
+                .build();
+
+        try {
+            checkAccountNotBlocked(account);
+            checkSufficientFunds(account, amount);
+            account.setBalance(account.getBalance().subtract(amount));
+            transaction.setStatus(TransactionStatus.SUCCESS);
+        } catch (Exception e) {
+            transaction.setStatus(TransactionStatus.FAILED);
+            transactionRepository.save(transaction);
+            throw e;
+        }
+        Transaction saved = transactionRepository.save(transaction);
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    @Transactional
+    public TransactionResponseDto payment(UUID fromAccountId, BigDecimal amount, String description) {
+        Account account = accountService.findById(fromAccountId);
+
+        Transaction transaction = Transaction.builder()
+                .amount(amount)
+                .type(TransactionType.PAYMENT)
+                .status(TransactionStatus.PENDING)
+                .fromAccount(account)
+                .description(description)
+                .referenceNumber(UUID.randomUUID().toString())
+                .build();
+
+        try {
+            checkAccountNotBlocked(account);
+            checkSufficientFunds(account, amount);
+            account.setBalance(account.getBalance().subtract(amount));
+            transaction.setStatus(TransactionStatus.SUCCESS);
+        } catch (Exception e) {
+            transaction.setStatus(TransactionStatus.FAILED);
+            transactionRepository.save(transaction);
+            throw e;
+        }
+
+        Transaction saved = transactionRepository.save(transaction);
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    public void canceled(UUID transactionId) {
+        Transaction transaction = findTransactionById(transactionId);
+
+        if (transaction.getStatus() != TransactionStatus.PENDING){
+            throw new CannotCancelTransactionException(transactionId);
+        }
+
+        if (transaction.getFromAccount() != null){
+            Account fromAccount = transaction.getFromAccount();;
+            fromAccount.setBalance(fromAccount.getBalance().add(transaction.getAmount()));
+        }
+
+        transaction.setStatus(TransactionStatus.CANCELLED);
+        transactionRepository.save(transaction);
     }
 
     private Transaction findTransactionById(UUID id){
