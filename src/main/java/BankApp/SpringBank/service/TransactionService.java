@@ -3,6 +3,7 @@ package BankApp.SpringBank.service;
 import BankApp.SpringBank.dto.req.transaction.TransactionRequestDto;
 import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ public interface TransactionService {
 
     TransactionResponseDto created(TransactionRequestDto dto);
 
-    TransactionRequestDto updated(UUID id, TransactionRequestDto dto);
+    List<TransactionResponseDto> getByAccountId(UUID accountId);
 
-    void deleted(UUID id);
+    TransactionResponseDto transfer(UUID fromId, UUID toId, BigDecimal amount);
 }

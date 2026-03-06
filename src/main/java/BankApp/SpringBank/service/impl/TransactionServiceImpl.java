@@ -2,15 +2,14 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.transaction.TransactionRequestDto;
 import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
-import BankApp.SpringBank.exception.TransactionNotFoundException;
 import BankApp.SpringBank.mapper.TransactionMapper;
-import BankApp.SpringBank.model.Transaction;
 import BankApp.SpringBank.repository.TransactionRepository;
 import BankApp.SpringBank.service.AccountService;
 import BankApp.SpringBank.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,14 +40,13 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionRequestDto updated(UUID id, TransactionRequestDto dto) {
-        return null;
+    public List<TransactionResponseDto> getByAccountId(UUID accountId) {
+        return List.of();
     }
 
     @Override
-    public void deleted(UUID id) {
-        if (!transactionRepository.existsById(id))
-            throw new TransactionNotFoundException(id);
-        transactionRepository.deleteById(id);
+    public TransactionResponseDto transfer(UUID fromId, UUID toId, BigDecimal amount) {
+        return null;
     }
+
 }

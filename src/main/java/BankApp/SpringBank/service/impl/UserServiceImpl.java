@@ -2,7 +2,6 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.req.user.UserRequestDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
-import BankApp.SpringBank.exception.AccountNotFoundException;
 import BankApp.SpringBank.exception.UserNotFoundException;
 import BankApp.SpringBank.mapper.UserMapper;
 import BankApp.SpringBank.model.Role;
