@@ -29,10 +29,10 @@ public class Transaction extends BaseDomain<UUID> {
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
-    @Column(name = "description", nullable = false, length = 50)
+    @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    @Column(name = "referenceNumber", nullable = false, length = 30)
+    @Column(name = "referenceNumber", nullable = false, length = 50)
     private String referenceNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)

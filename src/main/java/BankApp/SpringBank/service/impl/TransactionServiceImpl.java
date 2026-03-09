@@ -89,7 +89,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .status(TransactionStatus.PENDING)
                 .fromAccount(fromAccount)
                 .toAccount(toAccount)
-                .description("Transfer from " + fromId + "to" + toId)
+                .description("Transfer from " + fromId + " to " + toId)
                 .referenceNumber(UUID.randomUUID().toString())
                 .build();
         try {
