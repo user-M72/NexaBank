@@ -11,15 +11,15 @@ import java.util.UUID;
 public record UserRequestDto(
 
         @NotBlank(message = "First name must not be blank")
-        @Size(max=30, message = "First name must not exceed 30 characters")
+        @Size(max=30,min = 5, message = "First name must not exceed 30 characters")
         String firstName,
 
         @NotBlank(message = "Last name must not be blank")
-        @Size(max=30, message = "Last name must not exceed 30 characters")
+        @Size(max=30,min = 5, message = "Last name must not exceed 30 characters")
         String lastName,
 
         @NotBlank(message = "Username must not be blank")
-        @Size(max=30, message = "Username must not exceed 30 characters")
+        @Size(max=30,min = 5, message = "Username must not exceed 30 characters")
         String username,
 
         @Email(message = "Email should be valid")
