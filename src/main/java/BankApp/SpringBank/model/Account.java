@@ -30,8 +30,8 @@ public class Account extends BaseDomain<UUID> {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @Column(name = "isBlocked", nullable = false, length = 6)
-    private boolean isBlocked = false;
+    @Column(name = "is_blocked", nullable = false, length = 6)
+    private boolean blocked = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

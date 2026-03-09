@@ -40,6 +40,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public AccountResponseDto created(AccountRequestDto dto) {
         User user = userService.findById(dto.userId());
 
