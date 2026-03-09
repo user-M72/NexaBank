@@ -2,6 +2,7 @@ package BankApp.SpringBank.controller;
 
 import BankApp.SpringBank.dto.req.account.AccountRequestDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
+import BankApp.SpringBank.model.Enum.AccountType;
 import BankApp.SpringBank.model.Enum.Currency;
 import BankApp.SpringBank.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -77,5 +78,10 @@ public class AccountApi {
     @GetMapping("/currency")
     public Currency[] currencyType(){
         return Currency.values();
+    }
+
+    @GetMapping("/type")
+    public AccountType[] accountType(){
+        return AccountType.values();
     }
 }
