@@ -11,6 +11,7 @@ import BankApp.SpringBank.model.Transaction;
 import BankApp.SpringBank.repository.TransactionRepository;
 import BankApp.SpringBank.service.AccountService;
 import BankApp.SpringBank.service.TransactionService;
+import BankApp.SpringBank.service.SaveTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
     private final TransactionMapper mapper;
+    private final SaveTransactionService saveTransactionService;
 
     @Override
     public List<TransactionResponseDto> get() {
@@ -101,8 +103,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             transaction.setStatus(TransactionStatus.SUCCESS);
         } catch (Exception e) {
-            transaction.setStatus(TransactionStatus.FAILED);
-            transactionRepository.save(transaction);
+            saveTransactionService.saveTransaction(transaction);
             throw e;
         }
         Transaction saved = transactionRepository.save(transaction);
@@ -129,8 +130,7 @@ public class TransactionServiceImpl implements TransactionService {
             account.setBalance(account.getBalance().add(amount));
             transaction.setStatus(TransactionStatus.SUCCESS);
         } catch (Exception e) {
-            transaction.setStatus(TransactionStatus.FAILED);
-            transactionRepository.save(transaction);
+            saveTransactionService.saveTransaction(transaction);
             throw e;
         }
 
@@ -158,8 +158,7 @@ public class TransactionServiceImpl implements TransactionService {
             account.setBalance(account.getBalance().subtract(amount));
             transaction.setStatus(TransactionStatus.SUCCESS);
         } catch (Exception e) {
-            transaction.setStatus(TransactionStatus.FAILED);
-            transactionRepository.save(transaction);
+            saveTransactionService.saveTransaction(transaction);
             throw e;
         }
         Transaction saved = transactionRepository.save(transaction);
@@ -186,8 +185,7 @@ public class TransactionServiceImpl implements TransactionService {
             account.setBalance(account.getBalance().subtract(amount));
             transaction.setStatus(TransactionStatus.SUCCESS);
         } catch (Exception e) {
-            transaction.setStatus(TransactionStatus.FAILED);
-            transactionRepository.save(transaction);
+            saveTransactionService.saveTransaction(transaction);
             throw e;
         }
 
