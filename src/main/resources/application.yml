@@ -18,3 +18,10 @@ spring:
 spring doc:
   swagger-ui:
     path: /swagger-ui.html
+
+jwt:
+  secret: ImbBFh2MzRiitDhOaf0vOwqLiuUAich3DWYrCdq2ltkvgSSG9xEN0PJs3qaX9Wvg82A5VNaKo24065TqU7tOzN
+  access-token:
+    expiration: 900000
+  refresh-token:
+    expiration: 604800000
