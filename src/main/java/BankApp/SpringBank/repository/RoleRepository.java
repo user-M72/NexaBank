@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RoleRepository extends JpaRepository<Role, UUID> {
-    boolean existsByName(String admin);
+    boolean existsByName(String name);
 
-    Optional<Role> findByName(String admin);
+    Optional<Role> findByName(String name);
 }
