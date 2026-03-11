@@ -2,8 +2,8 @@ package BankApp.SpringBank.model;
 
 import BankApp.SpringBank.model.baseDomain.BaseDomain;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 import java.util.UUID;
@@ -12,6 +12,9 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class User extends BaseDomain<UUID> {
 
     @Column(name = "firstName", nullable = false, length = 30)
