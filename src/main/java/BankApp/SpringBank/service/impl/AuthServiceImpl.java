@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         );
 
         User user = userRepository.findByUsername(dto.username())
-                .orElseThrow(() -> new UserNotFoundException(null));
+                .orElseThrow(() -> new UsernameNotFoundException(dto.username()));
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
