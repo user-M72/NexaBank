@@ -4,7 +4,6 @@ import BankApp.SpringBank.dto.req.auth.Login;
 import BankApp.SpringBank.dto.req.auth.Register;
 import BankApp.SpringBank.dto.res.auth.AuthResponseDto;
 import BankApp.SpringBank.service.AuthService;
-import BankApp.SpringBank.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

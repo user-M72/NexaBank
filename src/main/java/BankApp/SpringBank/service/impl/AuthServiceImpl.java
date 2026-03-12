@@ -4,7 +4,7 @@ import BankApp.SpringBank.config.CustomUserDetails;
 import BankApp.SpringBank.dto.req.auth.Login;
 import BankApp.SpringBank.dto.req.auth.Register;
 import BankApp.SpringBank.dto.res.auth.AuthResponseDto;
-import BankApp.SpringBank.exception.UserNotFoundException;
+import BankApp.SpringBank.exception.*;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.repository.RoleRepository;
@@ -44,10 +44,8 @@ public class AuthServiceImpl implements AuthService {
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        String accessToken = jwtService.generateAccessToken(userDetails);
-        String refreshToken = jwtService.generateRefreshToken(userDetails);
+        return generateTokens(userDetails);
 
-        return new AuthResponseDto(accessToken, refreshToken);
     }
 
     @Override
@@ -55,15 +53,15 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponseDto register(Register dto) {
 
         if (userRepository.existsByUsername(dto.username())) {
-            throw new RuntimeException("Username already exists: " + dto.username());
+            throw new UsernameAlreadyExistsException(dto.username());
         }
 
         if (userRepository.existsByEmail(dto.email())) {
-            throw new RuntimeException("Email already exists: " + dto.email());
+            throw new EmailAlreadyExistsException(dto.email());
         }
 
         Role userRole = roleRepository.findByName("USER")
-                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+                .orElseThrow(() -> new RoleNotFoundByNameException("USER"));
 
         User user = User.builder()
                 .firstName(dto.firstName())
@@ -78,10 +76,8 @@ public class AuthServiceImpl implements AuthService {
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        String accessToken = jwtService.generateAccessToken(userDetails);
-        String refreshToken = jwtService.generateRefreshToken(userDetails);
+        return generateTokens(userDetails);
 
-        return new AuthResponseDto(accessToken, refreshToken);
     }
 
     @Override
@@ -95,12 +91,19 @@ public class AuthServiceImpl implements AuthService {
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
         if (!jwtService.isTokenValid(refreshToken, userDetails)) {
-            throw new RuntimeException("Refresh token invalid!");
+            throw new RefreshTokenInvalidException();
         }
+
+        return generateTokens(userDetails);
+
+    }
+
+    private AuthResponseDto generateTokens(CustomUserDetails userDetails) {
 
         String newAccessToken = jwtService.generateAccessToken(userDetails);
         String newRefreshToken = jwtService.generateRefreshToken(userDetails);
 
         return new AuthResponseDto(newAccessToken, newRefreshToken);
+
     }
 }
