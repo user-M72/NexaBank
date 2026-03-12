@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/roles/v1")
+@RequestMapping("/api/role/v1")
 @Tag(name = "Role API", description = "API for managing roles in the banking application")
 public class RoleApi {
 
