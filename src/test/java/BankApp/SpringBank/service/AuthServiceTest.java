@@ -57,8 +57,6 @@ public class AuthServiceTest {
         user.setRoles(new HashSet<>(Set.of(userRole)));
     }
 
-    // ===================== LOGIN =====================
-
     @Test
     void login_shouldWork() {
         Login dto = new Login("test", "test");
@@ -111,8 +109,6 @@ public class AuthServiceTest {
         verify(userRepository, never()).findByUsername(any());
         verify(jwtService, never()).generateAccessToken(any());
     }
-
-    // ===================== REGISTER =====================
 
     @Test
     void register_shouldWork() {
@@ -180,7 +176,6 @@ public class AuthServiceTest {
         verify(userRepository, never()).save(any());
     }
 
-    // ===================== REFRESH =====================
 
     @Test
     void refresh_shouldWork() {
