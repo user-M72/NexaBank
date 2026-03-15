@@ -36,7 +36,7 @@ public class RoleApi {
     @Operation(summary = "Create a role", description = "Create a new role in the system with the provided details")
     @PostMapping()
     public ResponseEntity<RoleResponseDto> created(@RequestBody RoleRequestDto dto){
-        RoleResponseDto created = service.created(dto);
+        RoleResponseDto created = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -44,13 +44,13 @@ public class RoleApi {
     @PutMapping("/{roleId}")
     public RoleResponseDto updated(@PathVariable("roleId") UUID id,
                                    @RequestBody RoleRequestDto dto){
-        return service.updated(id, dto);
+        return service.update(id, dto);
     }
 
     @Operation(summary = "Delete a role", description = "Delete an existing role in the system by id")
     @DeleteMapping("/{roleId}")
     public ResponseEntity<Void> deleted(@PathVariable("roleId") UUID id){
-        service.deleted(id);
+        service.delete(id);
         return ResponseEntity.ok().build();
     }
 }

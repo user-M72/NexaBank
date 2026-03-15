@@ -26,7 +26,7 @@ public class DbPopulator implements CommandLineRunner {
 
     private void createdAdminRole() {
         if (!roleService.existsByName("ADMIN")) {
-            roleService.created(new RoleRequestDto("ADMIN", "Administrator"));
+            roleService.create(new RoleRequestDto("ADMIN", "Administrator"));
         }
     }
 
