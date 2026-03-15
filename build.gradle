@@ -53,5 +53,5 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-	failOnNoDiscoveredTests = false // ← добавь!
+//	failOnNoDiscoveredTests = false // ← добавь!
 }
