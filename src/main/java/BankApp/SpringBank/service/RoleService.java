@@ -14,13 +14,13 @@ public interface RoleService {
 
     RoleResponseDto getById(UUID id);
 
-    RoleResponseDto created(RoleRequestDto dto);
+    RoleResponseDto create(RoleRequestDto dto);
 
-    RoleResponseDto updated(UUID id, RoleRequestDto dto);
+    RoleResponseDto update(UUID id, RoleRequestDto dto);
 
-    void deleted(UUID id);
+    void delete(UUID id);
 
-    Set<Role> geyByIdList(List<UUID> id);
+    Set<Role> getByIdList(List<UUID> id);
 
     boolean existsByName(String admin);
 

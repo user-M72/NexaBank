@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto created(UserRequestDto dto) {
 
-        Set<Role> roleSet = roleService.geyByIdList(dto.roleId());
+        Set<Role> roleSet = roleService.getByIdList(dto.roleId());
         User user = mapper.toEntity(dto, roleSet, passwordEncoder.encode(dto.password()));
         User save = repository.save(user);
         return mapper.toDto(save);
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto updated(UUID id, UserRequestDto dto) {
         User user = findById(id);
-        Set<Role> roles = roleService.geyByIdList(dto.roleId());
+        Set<Role> roles = roleService.getByIdList(dto.roleId());
 
         mapper.updateFromDto(dto, roles, user);
         User save = repository.save(user);

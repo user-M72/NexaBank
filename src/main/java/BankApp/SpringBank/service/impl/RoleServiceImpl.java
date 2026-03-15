@@ -34,29 +34,27 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleResponseDto getById(UUID id) {
-        Role role = repository.findById(id)
-                .orElseThrow(()-> new RoleNotFoundException(id));
+        Role role = findById(id);
         return mapper.toDto(role);
     }
 
     @Override
-    public RoleResponseDto created(RoleRequestDto dto) {
+    public RoleResponseDto create(RoleRequestDto dto) {
         Role role = mapper.toEntity(dto);
         Role save = repository.save(role);
         return mapper.toDto(save);
     }
 
     @Override
-    public RoleResponseDto updated(UUID id, RoleRequestDto dto) {
-        Role role = repository.findById(id)
-                .orElseThrow(()-> new RoleNotFoundException(id));
+    public RoleResponseDto update(UUID id, RoleRequestDto dto) {
+        Role role = findById(id);
         mapper.updateFromDto(dto, role);
         Role save = repository.save(role);
         return mapper.toDto(save);
     }
 
     @Override
-    public void deleted(UUID id) {
+    public void delete(UUID id) {
         if (!repository.existsById(id)){
             throw new RoleNotFoundException(id);
         }
@@ -64,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<Role> geyByIdList(List<UUID> id) {
+    public Set<Role> getByIdList(List<UUID> id) {
         return new HashSet<>(repository.findAllById(id));
     }
 
@@ -77,5 +75,10 @@ public class RoleServiceImpl implements RoleService {
     public Role getByName(String admin) {
         return repository.findByName(admin)
                 .orElseThrow(()-> new AdminNotFoundException(admin));
+    }
+
+    private Role findById(UUID id){
+        return repository.findById(id)
+                .orElseThrow(()-> new RoleNotFoundException(id));
     }
 }
