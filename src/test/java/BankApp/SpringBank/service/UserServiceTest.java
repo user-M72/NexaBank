@@ -39,12 +39,14 @@ public class UserServiceTest {
     private UserRequestDto request;
     private User user;
     private Set<Role> roles;
+    private String password;
 
     @BeforeEach
     void setup(){
 
         user = new User();
         roles = new HashSet<>();
+        password = "password";
 
         response = new UserResponseDto(
                 userId,
@@ -52,7 +54,7 @@ public class UserServiceTest {
                 "LastName",
                 "username",
                 "email",
-                "password",
+                password,
                 Set.of()
         );
 
@@ -61,7 +63,7 @@ public class UserServiceTest {
                 "LastName",
                 "username",
                 "email",
-                "password",
+                password,
                 List.of()
         );
     }
@@ -115,8 +117,6 @@ public class UserServiceTest {
     @Test
     void create_shouldWork(){
 
-        String password = "password";
-
         when(roleService.getByIdList(request.roleId())).thenReturn(roles);
         when(passwordEncoder.encode(request.password())).thenReturn(password);
         when(mapper.toEntity(request, roles, password)).thenReturn(user);
@@ -156,6 +156,7 @@ public class UserServiceTest {
 
     @Test
     void update_shouldThrow_userNotFound(){
+
         when(repository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
@@ -169,6 +170,7 @@ public class UserServiceTest {
 
     @Test
     void delete_shouldWork(){
+
         when(repository.existsById(userId)).thenReturn(true);
 
         testService.delete(userId);
@@ -179,6 +181,7 @@ public class UserServiceTest {
 
     @Test
     void delete_shouldThrow_userNorFound(){
+
         when(repository.existsById(userId)).thenReturn(false);
 
         assertThrows(UserNotFoundException.class,
