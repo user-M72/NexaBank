@@ -37,7 +37,7 @@ public class UserApi {
     @Operation(summary = "Create a users", description = "Create a new user in the system with the provided details")
     @PostMapping
     public ResponseEntity<UserResponseDto> created(@Valid @RequestBody UserRequestDto dto){
-        UserResponseDto created = service.created(dto);
+        UserResponseDto created = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -45,13 +45,13 @@ public class UserApi {
     @PutMapping("/{userId}")
     public UserResponseDto updated(@Valid @PathVariable("userId") UUID id,
                                    @RequestBody UserRequestDto dto){
-        return service.updated(id, dto);
+        return service.update(id, dto);
     }
 
     @Operation(summary = "Delete a users", description = "Delete an existing user in the system by id")
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleted(@PathVariable("userId") UUID id){
-         service.deleted(id);
+         service.delete(id);
          return ResponseEntity.ok().build();
     }
 }

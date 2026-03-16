@@ -33,7 +33,7 @@ public class DbPopulator implements CommandLineRunner {
     private void createdAdmin() {
         if (!userService.existsByEmail("admin@admin.com")) {
             Role admin = roleService.getByName("ADMIN");
-            userService.created(new UserRequestDto(
+            userService.create(new UserRequestDto(
                     "Admin",
                     "Admin",
                     "admin",

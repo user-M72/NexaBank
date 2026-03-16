@@ -13,11 +13,11 @@ public interface UserService {
 
     UserResponseDto getById(UUID id);
 
-    UserResponseDto created(UserRequestDto dto);
+    UserResponseDto create(UserRequestDto dto);
 
-    UserResponseDto updated(UUID id, UserRequestDto dto);
+    UserResponseDto update(UUID id, UserRequestDto dto);
 
-    void deleted(UUID id);
+    void delete(UUID id);
 
     boolean existsByEmail(String email);
 

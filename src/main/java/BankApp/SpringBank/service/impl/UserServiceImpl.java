@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto created(UserRequestDto dto) {
+    public UserResponseDto create(UserRequestDto dto) {
 
         Set<Role> roleSet = roleService.getByIdList(dto.roleId());
         User user = mapper.toEntity(dto, roleSet, passwordEncoder.encode(dto.password()));
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updated(UUID id, UserRequestDto dto) {
+    public UserResponseDto update(UUID id, UserRequestDto dto) {
         User user = findById(id);
         Set<Role> roles = roleService.getByIdList(dto.roleId());
 
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleted(UUID id) {
+    public void delete(UUID id) {
         if (!repository.existsById(id)) {
             throw new UserNotFoundException(id);
         }
