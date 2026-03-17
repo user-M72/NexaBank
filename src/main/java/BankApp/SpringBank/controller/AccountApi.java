@@ -39,7 +39,7 @@ public class AccountApi {
     @Operation(summary = "Create a accounts", description = "Create a new account in the system with the provided details")
     @PostMapping
     public ResponseEntity<AccountResponseDto> created(@RequestBody AccountRequestDto dto){
-        AccountResponseDto created = service.created(dto);
+        AccountResponseDto created = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -47,13 +47,13 @@ public class AccountApi {
     @PutMapping("/{accountId}")
     public AccountResponseDto updated(@PathVariable("accountId") UUID id,
                                       @RequestBody AccountRequestDto dto){
-        return service.updated(id, dto);
+        return service.update(id, dto);
     }
 
     @Operation(summary = "Delete a accounts", description = "Delete an existing account in the system by id")
     @DeleteMapping("/{accountId}")
     public ResponseEntity<Void> deleted(@PathVariable("accountId") UUID id){
-        service.deleted(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountResponseDto created(AccountRequestDto dto) {
+    public AccountResponseDto create(AccountRequestDto dto) {
         User user = userService.findById(dto.userId());
 
         String accountNumber = "ACC-" + UUID.randomUUID().toString().substring(0,8).toUpperCase();
@@ -54,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponseDto updated(UUID id, AccountRequestDto dto) {
+    public AccountResponseDto update(UUID id, AccountRequestDto dto) {
         Account account = findById(id);
         mapper.updateFromDto(dto, account);
         Account saved = accountRepository.save(account);
@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleted(UUID id) {
+    public void delete(UUID id) {
         if (!accountRepository.existsById(id))
             throw new AccountNotFoundException(id);
         accountRepository.deleteById(id);

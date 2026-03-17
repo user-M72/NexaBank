@@ -14,11 +14,11 @@ public interface AccountService {
 
     AccountResponseDto getById(UUID id);
 
-    AccountResponseDto created(AccountRequestDto dto);
+    AccountResponseDto create(AccountRequestDto dto);
 
-    AccountResponseDto updated(UUID id, AccountRequestDto dto);
+    AccountResponseDto update(UUID id, AccountRequestDto dto);
 
-    void deleted(UUID id);
+    void delete(UUID id);
 
     AccountResponseDto deposit(UUID id, BigDecimal amount);
 
