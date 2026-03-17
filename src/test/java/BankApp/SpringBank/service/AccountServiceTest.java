@@ -9,7 +9,6 @@ import BankApp.SpringBank.model.Enum.AccountType;
 import BankApp.SpringBank.model.Enum.Currency;
 import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.repository.AccountRepository;
-import BankApp.SpringBank.repository.UserRepository;
 import BankApp.SpringBank.service.impl.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,8 +38,6 @@ public class AccountServiceTest {
     private UserService userService;
     @Mock
     private AccountMapper mapper;
-    @Mock
-    private UserRepository userRepository;
 
     private AccountResponseDto response;
     private AccountRequestDto request;
