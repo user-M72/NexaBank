@@ -12,11 +12,11 @@ public interface CardService {
 
     CardResponseDto getById(UUID id);
 
-    CardResponseDto created(CardRequestDto dto);
+    CardResponseDto create(CardRequestDto dto);
 
-    CardResponseDto updated(UUID id, CardRequestDto dto);
+    CardResponseDto update(UUID id, CardRequestDto dto);
 
-    void deleted(UUID id);
+    void delete(UUID id);
 
     void block(UUID id);
 

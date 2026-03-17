@@ -36,7 +36,7 @@ public class CardApi {
     @Operation(summary = "Create a cards", description = "Create a new card in the system with the provided details")
     @PostMapping
     public ResponseEntity<CardResponseDto> created(@RequestBody CardRequestDto dto){
-        CardResponseDto created = service.created(dto);
+        CardResponseDto created = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -44,13 +44,13 @@ public class CardApi {
     @PutMapping("/{carId}")
     public CardResponseDto updated(@PathVariable("carId") UUID id,
                                    @RequestBody CardRequestDto dto){
-        return service.updated(id, dto);
+        return service.update(id, dto);
     }
 
     @Operation(summary = "Delete a cards", description = "Delete an existing card in the system by id")
     @DeleteMapping("/{carId}")
     public ResponseEntity<Void> deleted(@PathVariable("carId") UUID id){
-        service.deleted(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -42,7 +42,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto created(CardRequestDto dto) {
+    public CardResponseDto create(CardRequestDto dto) {
         Account account = accountService.findById(dto.accountId());
 
         switch (dto.cardType()){
@@ -53,7 +53,7 @@ public class CardServiceImpl implements CardService {
             }
             case CREDIT -> {
                 if (account.getType() != AccountType.CREDIT){
-                    throw new InvalidCardTypeException("Кредитная карта только для кредитного счёта!");
+                    throw new InvalidCardTypeException("Credit card for credit account only!");
                 }
             }
             case VIRTUAL -> {
@@ -69,7 +69,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto updated(UUID id, CardRequestDto dto) {
+    public CardResponseDto update(UUID id, CardRequestDto dto) {
         Card card = findCardId(id);
         mapper.updateFromDto(dto, card);
         Card saved = cardRepository.save(card);
@@ -77,7 +77,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void deleted(UUID id) {
+    public void delete(UUID id) {
         if (!cardRepository.existsById(id))
             throw new CardNotFoundException(id);
         cardRepository.deleteById(id);
