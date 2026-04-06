@@ -1,7 +1,9 @@
 package BankApp.SpringBank.controller;
 
 import BankApp.SpringBank.dto.req.user.UserRequestDto;
+import BankApp.SpringBank.dto.res.user.ProfileResponseDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
+import BankApp.SpringBank.service.AuthService;
 import BankApp.SpringBank.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class UserApi {
 
     private final UserService service;
+    private final AuthService authService;
 
     @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system")
     @GetMapping
@@ -54,4 +57,20 @@ public class UserApi {
          service.delete(id);
          return ResponseEntity.ok().build();
     }
+//
+//    @GetMapping("/me")
+//    public ResponseEntity<ProfileResponseDto> profile(){
+//        ProfileResponseDto profile = service.getMyProfile();
+//        return ResponseEntity.ok().body(profile);
+//    }
+//
+//    @PutMapping("/me")
+//    public ResponseEntity<?> profile(){
+//        return null;
+//    }
+//
+//    @PatchMapping("/me")
+//    public ResponseEntity<?> profile(){
+//        return null;
+//    }
 }

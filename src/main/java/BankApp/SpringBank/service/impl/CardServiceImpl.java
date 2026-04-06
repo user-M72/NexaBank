@@ -22,108 +22,28 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
-
-    private final AccountService accountService;
-    private final CardRepository cardRepository;
-    private final CardMapper mapper;
-
     @Override
     public List<CardResponseDto> get() {
-        return cardRepository.findAll()
-                .stream()
-                .map(mapper::toDto)
-                .toList();
+        return List.of();
     }
 
     @Override
     public CardResponseDto getById(UUID id) {
-        Card card = findCardId(id);
-        return mapper.toDto(card);
+        return null;
     }
 
     @Override
     public CardResponseDto create(CardRequestDto dto) {
-        Account account = accountService.findById(dto.accountId());
-
-        switch (dto.cardType()){
-            case DEBIT -> {
-                if (account.getType() != AccountType.CHECKING){
-                    throw new InvalidCardTypeException("Debit card for current account only!");
-                }
-            }
-            case CREDIT -> {
-                if (account.getType() != AccountType.CREDIT){
-                    throw new InvalidCardTypeException("Credit card for credit account only!");
-                }
-            }
-            case VIRTUAL -> {
-                /*The virtual card can be linked to any account*/
-            }
-        }
-        String cardNumber = generateCardNumber();
-        String cvvHash = generateCvv();
-
-        Card card = mapper.toEntity(dto, account, cardNumber, cvvHash);
-        Card saved = cardRepository.save(card);
-        return mapper.toDto(saved);
+        return null;
     }
 
     @Override
     public CardResponseDto update(UUID id, CardRequestDto dto) {
-        Card card = findCardId(id);
-        mapper.updateFromDto(dto, card);
-        Card saved = cardRepository.save(card);
-        return mapper.toDto(saved);
+        return null;
     }
 
     @Override
     public void delete(UUID id) {
-        if (!cardRepository.existsById(id))
-            throw new CardNotFoundException(id);
-        cardRepository.deleteById(id);
-    }
 
-    @Override
-    public void block(UUID id) {
-        Card card = findCardId(id);
-        checkNotBlocked(card);
-        card.setActive(false);
-        cardRepository.save(card);
-    }
-
-    @Override
-    public void unblock(UUID id) {
-        Card card = findCardId(id);
-        checkIsBlocked(card);
-        card.setActive(true);
-        cardRepository.save(card);
-    }
-
-    private Card findCardId(UUID id){
-        return cardRepository.findById(id)
-                .orElseThrow(()-> new CardNotFoundException(id));
-    }
-
-    private void checkNotBlocked(Card card){
-        if (!card.isActive()){
-            throw new CardBlockedException(card.getId());
-        }
-    }
-
-    private void checkIsBlocked(Card card){
-        if (card.isActive()){
-            throw new CardNotBlockedException(card.getId());
-        }
-    }
-
-    private String generateCardNumber(){
-        return "4532" + String.format("%04d", (int)(Math.random() * 9999))
-                + String.format("%04d", (int)(Math.random() * 9999))
-                + String.format("%04d", (int)(Math.random() * 9999));
-    }
-
-
-    private String generateCvv(){
-        return String.format("%03d", (int)(Math.random() * 999));
     }
 }

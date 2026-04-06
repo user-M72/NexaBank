@@ -1,12 +1,16 @@
 package BankApp.SpringBank.service.impl;
 
+import BankApp.SpringBank.dto.req.user.ProfileUpdatePasswordDto;
+import BankApp.SpringBank.dto.req.user.ProfileUpdateRequestDto;
 import BankApp.SpringBank.dto.req.user.UserRequestDto;
+import BankApp.SpringBank.dto.res.user.ProfileResponseDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
 import BankApp.SpringBank.exception.UserNotFoundException;
 import BankApp.SpringBank.mapper.UserMapper;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.repository.UserRepository;
+import BankApp.SpringBank.service.AuthService;
 import BankApp.SpringBank.service.RoleService;
 import BankApp.SpringBank.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
     @Override
     public List<UserResponseDto> get() {
@@ -79,5 +84,21 @@ public class UserServiceImpl implements UserService {
     public User findById(UUID id) {
         return repository.findById(id)
                 .orElseThrow(()-> new UserNotFoundException(id));
+    }
+
+    @Override
+    public ProfileResponseDto getMyProfile() {
+        User user = authService.getCurrentUser();
+        return null;
+    }
+
+    @Override
+    public ProfileResponseDto updateMyProfile(ProfileUpdateRequestDto dto) {
+        return null;
+    }
+
+    @Override
+    public ProfileResponseDto changeMyPassword(ProfileUpdatePasswordDto dto) {
+        return null;
     }
 }

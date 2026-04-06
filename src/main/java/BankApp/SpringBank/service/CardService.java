@@ -18,7 +18,4 @@ public interface CardService {
 
     void delete(UUID id);
 
-    void block(UUID id);
-
-    void unblock(UUID id);
 }
