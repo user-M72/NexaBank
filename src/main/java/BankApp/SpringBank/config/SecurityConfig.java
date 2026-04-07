@@ -47,6 +47,11 @@ public class SecurityConfig {
             "/api/card/v1/**"
     };
 
+    private static final String[] AUTHENTICATED_URLS = {
+            "/api/user/v1/me",
+            "/api/user/v1/me/**",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -57,6 +62,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider(userDetailsService))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(PUBLIC_URLS).permitAll()
+                                .requestMatchers(AUTHENTICATED_URLS).authenticated()
                                 .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
                                 .requestMatchers(USER_URLS).hasAnyRole("USER","ADMIN")
                                 .anyRequest()
