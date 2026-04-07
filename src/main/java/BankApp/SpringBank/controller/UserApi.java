@@ -57,20 +57,20 @@ public class UserApi {
          service.delete(id);
          return ResponseEntity.ok().build();
     }
-//
-//    @GetMapping("/me")
-//    public ResponseEntity<ProfileResponseDto> profile(){
-//        ProfileResponseDto profile = service.getMyProfile();
-//        return ResponseEntity.ok().body(profile);
-//    }
-//
-//    @PutMapping("/me")
-//    public ResponseEntity<?> profile(){
-//        return null;
-//    }
-//
-//    @PatchMapping("/me")
-//    public ResponseEntity<?> profile(){
-//        return null;
-//    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ProfileResponseDto> profile(){
+        ProfileResponseDto profile = service.getMyProfile();
+        return ResponseEntity.ok().body(profile);
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<?> updateProfile(){
+        return null;
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity<?> changePassword(){
+        return null;
+    }
 }

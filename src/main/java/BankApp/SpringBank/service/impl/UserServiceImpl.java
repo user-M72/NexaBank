@@ -6,6 +6,7 @@ import BankApp.SpringBank.dto.req.user.UserRequestDto;
 import BankApp.SpringBank.dto.res.user.ProfileResponseDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
 import BankApp.SpringBank.exception.UserNotFoundException;
+import BankApp.SpringBank.mapper.ProfileMapper;
 import BankApp.SpringBank.mapper.UserMapper;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.model.User;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
+    private final ProfileMapper profileMapper;
 
     @Override
     public List<UserResponseDto> get() {
@@ -89,7 +91,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ProfileResponseDto getMyProfile() {
         User user = authService.getCurrentUser();
-        return null;
+
+        return profileMapper.toDto(user);
     }
 
     @Override
