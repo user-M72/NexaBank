@@ -49,7 +49,7 @@ public class SecurityConfig {
 
     private static final String[] AUTHENTICATED_URLS = {
             "/api/user/v1/me",
-            "/api/user/v1/me/**",
+            "/api/user/v1/me/**"
     };
 
     @Bean

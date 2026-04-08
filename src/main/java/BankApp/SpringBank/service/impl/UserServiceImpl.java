@@ -97,11 +97,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ProfileResponseDto updateMyProfile(ProfileUpdateRequestDto dto) {
-        return null;
+        User user = authService.getCurrentUser();
+
+        if (dto.firstName() != null && !dto.firstName().isBlank()) user.setFirstName(dto.firstName());
+        if (dto.lastName() != null && !dto.lastName().isBlank()) user.setLastName(dto.lastName());
+        if (dto.email() != null && !dto.email().isBlank()) user.setEmail(dto.email());
+        if (dto.username() != null && !dto.username().isBlank()) user.setUsername(dto.username());
+
+        User save = repository.save(user);
+        return profileMapper.toDto(save);
     }
 
     @Override
     public ProfileResponseDto changeMyPassword(ProfileUpdatePasswordDto dto) {
-        return null;
+        User user = authService.getCurrentUser();
+
+        if (!passwordEncoder.matches(dto.currentPassword(), user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        if (!dto.newPassword().equals(dto.confirmPassword())){
+            throw new RuntimeException("Passwords do not match");
+        }
+
+        user.setPassword(passwordEncoder.encode(dto.newPassword()));
+        User save = repository.save(user);
+        return profileMapper.toDto(save);
     }
 }

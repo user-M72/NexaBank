@@ -13,7 +13,7 @@ public record ProfileResponseDto(
         String lastName,
         String username,
         String email,
-        Set<RoleResponseDto> roles,
+        Set<UUID> roleIds,
         Instant createDate,
         Instant updateDate
 ) {

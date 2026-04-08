@@ -1,5 +1,7 @@
 package BankApp.SpringBank.controller;
 
+import BankApp.SpringBank.dto.req.user.ProfileUpdatePasswordDto;
+import BankApp.SpringBank.dto.req.user.ProfileUpdateRequestDto;
 import BankApp.SpringBank.dto.req.user.UserRequestDto;
 import BankApp.SpringBank.dto.res.user.ProfileResponseDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
@@ -23,7 +25,6 @@ import java.util.UUID;
 public class UserApi {
 
     private final UserService service;
-    private final AuthService authService;
 
     @Operation(summary = "Get all users", description = "Retrieve a list of all users in the system")
     @GetMapping
@@ -64,13 +65,19 @@ public class UserApi {
         return ResponseEntity.ok().body(profile);
     }
 
-    @PutMapping("/me")
-    public ResponseEntity<?> updateProfile(){
-        return null;
+    @PutMapping("/me/update")
+    public ResponseEntity<ProfileResponseDto> updateProfile(
+            @RequestBody ProfileUpdateRequestDto dto
+    ){
+        ProfileResponseDto updateMyProfile = service.updateMyProfile(dto);
+        return ResponseEntity.ok(updateMyProfile);
     }
 
-    @PatchMapping("/me")
-    public ResponseEntity<?> changePassword(){
-        return null;
+    @PatchMapping("/me/password")
+    public ResponseEntity<ProfileResponseDto> changePassword(
+            @RequestBody ProfileUpdatePasswordDto dto
+            ){
+        ProfileResponseDto changeMyPassword = service.changeMyPassword(dto);
+        return ResponseEntity.ok(changeMyPassword);
     }
 }
