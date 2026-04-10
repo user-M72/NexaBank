@@ -9,12 +9,4 @@ import java.util.UUID;
 
 public interface CardService {
 
-    CardResponseDto createCard(CardCreateDto dto);
-
-    List<CardResponseDto> getMyCards();
-
-    List<CardResponseDto> getCardsByAccount(UUID accountId);
-
-    CardResponseDto blockCard(UUID cardId);
-
 }

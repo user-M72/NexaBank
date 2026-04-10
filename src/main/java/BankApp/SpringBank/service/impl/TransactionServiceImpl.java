@@ -55,9 +55,6 @@ public class TransactionServiceImpl implements TransactionService {
         from.setBalance(from.getBalance().subtract(dto.amount()));
         to.setBalance(to.getBalance().add(dto.amount()));
 
-//        accountService.save(from);
-//        accountService.save(to);
-
         Transaction transaction = Transaction.builder()
                 .amount(dto.amount())
                 .type(TransactionType.TRANSFER)

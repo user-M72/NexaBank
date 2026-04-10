@@ -19,28 +19,4 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Transaction extends BaseDomain<UUID> {
 
-    @Column(name = "amount", nullable = false, precision = 19, scale = 2)
-    private BigDecimal amount;
-
-    @Column(name = "type", nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    private TransactionType type;
-
-    @Column(name = "status", nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    private TransactionStatus status = TransactionStatus.PENDING;
-
-    @Column(name = "description", length = 150)
-    private String description;
-
-    @Column(name = "reference_number", nullable = false, unique = true, length = 50)
-    private String referenceNumber;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_account_id")
-    private Account fromAccount;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_account_id")
-    private Account toAccount;
 }

@@ -10,13 +10,4 @@ import java.util.UUID;
 
 public interface AccountService {
 
-    List<AccountResponseDto> getMyAccounts();
-
-    AccountResponseDto getAccountById(UUID id);
-
-    AccountResponseDto createAccount(AccountCreateDto dto);
-
-    AccountResponseDto changeStatus(UUID id, AccountStatus status);
-
-    Account findById(UUID id);
 }
