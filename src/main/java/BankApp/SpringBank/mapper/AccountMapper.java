@@ -14,10 +14,10 @@ public interface AccountMapper {
 
     AccountResponseDto toDto(Account account);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "owner", source = "user")
-    @Mapping(target = "blocked", constant = "false")
-    Account toEntity(AccountRequestDto dto, User user, String accountNumber);
+//    @Mapping(target = "id", ignore = true)
+//    @Mapping(target = "owner", source = "user")
+//    @Mapping(target = "blocked", constant = "false")
+//    Account toEntity(AccountRequestDto dto, User user, String accountNumber);
 
     void updateFromDto(AccountRequestDto dto, @MappingTarget Account account);
 }

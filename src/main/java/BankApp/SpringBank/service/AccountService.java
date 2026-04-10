@@ -2,6 +2,7 @@ package BankApp.SpringBank.service;
 
 import BankApp.SpringBank.dto.AccountCreateDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
+import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.Enum.AccountStatus;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface AccountService {
     AccountResponseDto createAccount(AccountCreateDto dto);
 
     AccountResponseDto changeStatus(UUID id, AccountStatus status);
+
+    Account findById(UUID id);
 }
