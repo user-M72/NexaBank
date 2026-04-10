@@ -38,7 +38,10 @@ public class SecurityConfig {
 
     private static final String[] ADMIN_URLS = {
             "/api/user/v1/**",
-            "/api/role/v1/**"
+            "/api/role/v1/**",
+            "/api/account/v1/**",
+            "/api/card/v1/**",
+            "/api/transaction/v1**"
     };
 
     private static final String[] USER_URLS = {

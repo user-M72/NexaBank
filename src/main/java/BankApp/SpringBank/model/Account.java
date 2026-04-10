@@ -24,6 +24,9 @@ import java.util.UUID;
 @SuperBuilder
 public class Account extends BaseDomain<UUID> {
 
+    @Column(name = "bank_name", nullable = false, length = 30)
+    private String bankName;
+
     @Column(name = "account_number", nullable = false, unique = true, length = 30)
     private String accountNumber;
 

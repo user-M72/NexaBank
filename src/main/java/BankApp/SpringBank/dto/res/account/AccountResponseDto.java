@@ -11,6 +11,7 @@ import java.util.UUID;
 public record AccountResponseDto(
 
         UUID id,
+        String bankName,
         String accountNumber,
         BigDecimal balance,
         AccountType type,
