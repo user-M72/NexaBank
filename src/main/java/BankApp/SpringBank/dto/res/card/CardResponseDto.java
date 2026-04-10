@@ -13,6 +13,7 @@ public record CardResponseDto(
         String expiryDate,
         CardType cardType,
         BigDecimal dailyLimit,
-        boolean isActive
+        boolean isActive,
+        UUID accountId
 
 ) {}

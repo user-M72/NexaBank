@@ -1,5 +1,6 @@
 package BankApp.SpringBank.service.impl;
 
+import BankApp.SpringBank.dto.CardCreateDto;
 import BankApp.SpringBank.dto.req.card.CardRequestDto;
 import BankApp.SpringBank.dto.res.card.CardResponseDto;
 import BankApp.SpringBank.exception.CardBlockedException;
@@ -23,27 +24,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
     @Override
-    public List<CardResponseDto> get() {
+    public CardResponseDto createCard(CardCreateDto dto) {
+        return null;
+    }
+
+    @Override
+    public List<CardResponseDto> getMyCards() {
         return List.of();
     }
 
     @Override
-    public CardResponseDto getById(UUID id) {
-        return null;
+    public List<CardResponseDto> getCardsByAccount(UUID accountId) {
+        return List.of();
     }
 
     @Override
-    public CardResponseDto create(CardRequestDto dto) {
+    public CardResponseDto blockCard(UUID cardId) {
         return null;
-    }
-
-    @Override
-    public CardResponseDto update(UUID id, CardRequestDto dto) {
-        return null;
-    }
-
-    @Override
-    public void delete(UUID id) {
-
     }
 }

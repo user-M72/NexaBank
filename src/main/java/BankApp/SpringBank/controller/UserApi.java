@@ -61,23 +61,27 @@ public class UserApi {
 
     @GetMapping("/me")
     public ResponseEntity<ProfileResponseDto> profile(){
+
         ProfileResponseDto profile = service.getMyProfile();
         return ResponseEntity.ok().body(profile);
+
     }
 
     @PutMapping("/me/update")
     public ResponseEntity<ProfileResponseDto> updateProfile(
-            @RequestBody ProfileUpdateRequestDto dto
-    ){
+            @RequestBody ProfileUpdateRequestDto dto){
+
         ProfileResponseDto updateMyProfile = service.updateMyProfile(dto);
         return ResponseEntity.ok(updateMyProfile);
+
     }
 
     @PatchMapping("/me/password")
     public ResponseEntity<ProfileResponseDto> changePassword(
-            @RequestBody ProfileUpdatePasswordDto dto
-            ){
+            @RequestBody ProfileUpdatePasswordDto dto){
+
         ProfileResponseDto changeMyPassword = service.changeMyPassword(dto);
         return ResponseEntity.ok(changeMyPassword);
+
     }
 }

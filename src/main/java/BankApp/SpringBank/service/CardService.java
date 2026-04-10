@@ -1,5 +1,6 @@
 package BankApp.SpringBank.service;
 
+import BankApp.SpringBank.dto.CardCreateDto;
 import BankApp.SpringBank.dto.req.card.CardRequestDto;
 import BankApp.SpringBank.dto.res.card.CardResponseDto;
 
@@ -8,14 +9,12 @@ import java.util.UUID;
 
 public interface CardService {
 
-    List<CardResponseDto> get();
+    CardResponseDto createCard(CardCreateDto dto);
 
-    CardResponseDto getById(UUID id);
+    List<CardResponseDto> getMyCards();
 
-    CardResponseDto create(CardRequestDto dto);
+    List<CardResponseDto> getCardsByAccount(UUID accountId);
 
-    CardResponseDto update(UUID id, CardRequestDto dto);
-
-    void delete(UUID id);
+    CardResponseDto blockCard(UUID cardId);
 
 }

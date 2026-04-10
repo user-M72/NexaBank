@@ -1,8 +1,8 @@
 package BankApp.SpringBank.model.Enum;
 
 public enum TransactionType {
-    DEPOSIT,
-    WITHDRAWAL,
-    TRANSFER,
-    PAYMENT
+
+    TRANSFER,    // перевод между счетами
+    DEPOSIT,     // пополнение
+    WITHDRAWAL   // снятие
 }
