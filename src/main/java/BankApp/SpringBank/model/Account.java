@@ -5,10 +5,7 @@ import BankApp.SpringBank.model.Enum.AccountType;
 import BankApp.SpringBank.model.Enum.Currency;
 import BankApp.SpringBank.model.baseDomain.BaseDomain;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -31,6 +28,7 @@ public class Account extends BaseDomain<UUID> {
     private String accountNumber;
 
     @Column(name = "balance", nullable = false, precision = 19, scale = 2)
+    @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(name = "type", nullable = false, length = 10)
@@ -43,6 +41,7 @@ public class Account extends BaseDomain<UUID> {
 
     @Column(name = "status", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private AccountStatus status = AccountStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)

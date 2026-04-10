@@ -45,9 +45,11 @@ public class AccountServiceImpl implements AccountService {
         User user = authService.getCurrentUser();
 
         Account account = Account.builder()
+                .bankName(dto.bankName())
                 .accountNumber(generateAccountNumber())
                 .balance(BigDecimal.ZERO)
                 .type(dto.type())
+                .currency(dto.currency())
                 .status(AccountStatus.ACTIVE)
                 .owner(user)
                 .build();
