@@ -28,9 +28,11 @@ public class Card extends BaseDomain<UUID> {
     private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Currency currency;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CardType type;
 
 

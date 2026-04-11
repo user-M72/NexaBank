@@ -2,7 +2,7 @@ package BankApp.SpringBank.controller;
 
 import BankApp.SpringBank.dto.CardCreateDto;
 import BankApp.SpringBank.dto.res.card.CardResponseDto;
-import BankApp.SpringBank.model.Card;
+import BankApp.SpringBank.model.Enum.CardType;
 import BankApp.SpringBank.service.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +42,10 @@ public class CardApi {
     public ResponseEntity<CardResponseDto> unBlockCard(@PathVariable("cardId") UUID id){
         CardResponseDto unBlock = service.unBlock(id);
         return ResponseEntity.ok(unBlock);
+    }
+
+    @GetMapping("/cardType")
+    public CardType[] CardType(){
+        return CardType.values();
     }
 }

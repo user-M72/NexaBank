@@ -10,7 +10,7 @@ public record CardResponseDto(
 
         UUID id,
         String cardNumber,
-        String expiryDate,
+        String expirationDate,
         BigDecimal balance,
         Currency currency,
         CardType type,

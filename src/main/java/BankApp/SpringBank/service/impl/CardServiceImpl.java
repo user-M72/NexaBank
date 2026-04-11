@@ -45,6 +45,7 @@ public class CardServiceImpl implements CardService {
                 .expirationDate(generateExpiryDate())
                 .balance(BigDecimal.ZERO)
                 .currency(dto.currency())
+                .type(dto.type())
                 .blocked(false)
                 .account(account)
                 .build();

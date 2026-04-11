@@ -5,7 +5,6 @@ import BankApp.SpringBank.dto.req.transfer.TransferRequestDto;
 import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface TransactionService {
 
@@ -15,6 +14,6 @@ public interface TransactionService {
 
     TransactionResponseDto withdraw(DepositRequestDto dto);
 
-    List<TransactionResponseDto> getHistory(UUID id);
+    List<TransactionResponseDto> getHistory();
 
 }

@@ -25,9 +25,11 @@ public class Account extends BaseDomain<UUID> {
     private String bankName;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccountType type;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccountStatus status;
 
     private boolean blocked = false;

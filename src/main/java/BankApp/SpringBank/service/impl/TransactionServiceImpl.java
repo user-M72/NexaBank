@@ -118,9 +118,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionResponseDto> getHistory(UUID id) {
+    public List<TransactionResponseDto> getHistory() {
+        User user = authService.getCurrentUser();
         return repository.
-                findByFromCardIdOrToCardId(id, id)
+                findAllByUser(user)
                 .stream()
                 .map(mapper::toDto)
                 .toList();

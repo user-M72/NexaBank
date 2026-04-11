@@ -2,9 +2,7 @@ package BankApp.SpringBank.controller;
 
 import BankApp.SpringBank.dto.AccountCreateDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
-import BankApp.SpringBank.model.Enum.AccountStatus;
 import BankApp.SpringBank.service.AccountService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

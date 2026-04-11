@@ -9,7 +9,7 @@ import java.util.UUID;
 public record CardCreateDto(
 
         UUID accountId,
-        CardType cardType,
+        CardType type,
         Currency currency
 ) {
 }

@@ -6,10 +6,9 @@ import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
 import BankApp.SpringBank.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transaction/v1")
@@ -30,5 +29,9 @@ public class TransactionApi {
         return ResponseEntity.ok(deposit);
     }
 
-
+    @GetMapping("/history")
+    public ResponseEntity<List<TransactionResponseDto>> history(){
+        List<TransactionResponseDto> history = service.getHistory();
+        return ResponseEntity.ok(history);
+    }
 }
