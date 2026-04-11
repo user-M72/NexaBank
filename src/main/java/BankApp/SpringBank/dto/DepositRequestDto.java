@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record DepositRequestDto(
 
-        UUID accountId,
+        UUID cardId,
         BigDecimal amount
 ) {
 }

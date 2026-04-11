@@ -13,7 +13,4 @@ public interface CardMapper {
 
     CardResponseDto toDto(Card card);
 
-    Card toEntity(CardRequestDto dto, Account account, String cardNumber, String cvvHash);
-
-    void updateFromDto(CardRequestDto dto, @MappingTarget Card card);
 }

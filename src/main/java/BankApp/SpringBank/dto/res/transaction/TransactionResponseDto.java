@@ -11,12 +11,11 @@ public record TransactionResponseDto(
 
         UUID id,
         BigDecimal amount,
-        TransactionType type,
         TransactionStatus status,
+        TransactionType type,
+        UUID fromCardId,
+        UUID toCardId,
         String description,
-        String referenceNumber,
-        UUID fromAccountId,
-        UUID toAccountId,
         Instant createdDate
 
 ) {}

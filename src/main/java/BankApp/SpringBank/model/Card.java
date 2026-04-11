@@ -1,5 +1,6 @@
 package BankApp.SpringBank.model;
 
+import BankApp.SpringBank.model.Enum.CardType;
 import BankApp.SpringBank.model.Enum.Currency;
 import BankApp.SpringBank.model.baseDomain.BaseDomain;
 import jakarta.persistence.*;
@@ -29,8 +30,11 @@ public class Card extends BaseDomain<UUID> {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    @Column(nullable = false)
-    private boolean blocked= false;
+    @Enumerated(EnumType.STRING)
+    private CardType type;
+
+
+    private boolean blocked = false;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)

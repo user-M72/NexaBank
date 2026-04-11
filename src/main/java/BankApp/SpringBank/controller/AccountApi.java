@@ -22,26 +22,25 @@ public class AccountApi {
 
     @PostMapping("/create")
     public ResponseEntity<AccountResponseDto> createAccount(@RequestBody AccountCreateDto dto){
-        AccountResponseDto account = service.createAccount(dto);
+        AccountResponseDto account = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(account);
     }
 
     @GetMapping("/my")
     public ResponseEntity<List<AccountResponseDto>> getMyAccount(){
-        List<AccountResponseDto> accounts = service.getMyAccounts();
+        List<AccountResponseDto> accounts = service.getMyAccount();
         return ResponseEntity.ok(accounts);
     }
 
     @GetMapping("/{accountId}")
     public ResponseEntity<AccountResponseDto> getAccountById(@PathVariable("accountId") UUID accountId){
-        AccountResponseDto account = service.getAccountById(accountId);
+        AccountResponseDto account = service.getAccount(accountId);
         return ResponseEntity.ok(account);
     }
 
-    @PatchMapping("/{accountId}/status")
-    public ResponseEntity<AccountResponseDto> changeStatus(@PathVariable("accountId") UUID accountId,
-                                                           @RequestParam("status") AccountStatus status){
-        AccountResponseDto changeStatus = service.changeStatus(accountId, status);
+    @PatchMapping("/{accountId}/block")
+    public ResponseEntity<AccountResponseDto> changeStatus(@PathVariable("accountId") UUID accountId){
+        AccountResponseDto changeStatus = service.block(accountId);
         return ResponseEntity.ok(changeStatus);
     }
 }

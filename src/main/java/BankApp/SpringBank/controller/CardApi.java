@@ -31,15 +31,16 @@ public class CardApi {
         return ResponseEntity.ok(myCards);
     }
 
-    @GetMapping("/account/{cardId}")
-    public ResponseEntity<List<CardResponseDto>> getCardsByAccount(@PathVariable("cardId")UUID id){
-        List<CardResponseDto> cardsByAccount = service.getCardsByAccount(id);
-        return ResponseEntity.ok(cardsByAccount);
-    }
 
     @PatchMapping("/{cardId}/block")
     public ResponseEntity<CardResponseDto> blockCard(@PathVariable("cardId") UUID id){
-        CardResponseDto cardResponseDto = service.blockCard(id);
-        return ResponseEntity.ok(cardResponseDto);
+        CardResponseDto block = service.block(id);
+        return ResponseEntity.ok(block);
+    }
+
+    @PatchMapping("/{cardId}/unBlock")
+    public ResponseEntity<CardResponseDto> unBlockCard(@PathVariable("cardId") UUID id){
+        CardResponseDto unBlock = service.unBlock(id);
+        return ResponseEntity.ok(unBlock);
     }
 }

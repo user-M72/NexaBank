@@ -5,8 +5,8 @@ import java.util.UUID;
 
 public record TransferRequestDto(
 
-        UUID fromAccount,
-        UUID toAccount,
+        UUID fromCardId,
+        UUID toCardId,
         BigDecimal amount,
         String description
 

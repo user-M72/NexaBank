@@ -9,13 +9,12 @@ import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.repository.AccountRepository;
 import BankApp.SpringBank.service.AccountService;
 import BankApp.SpringBank.service.AuthService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,45 +24,44 @@ public class AccountServiceImpl implements AccountService {
     private final AuthService authService;
     private final AccountMapper mapper;
 
-    @Override
-    public List<AccountResponseDto> getMyAccounts() {
-        User user = authService.getCurrentUser();
-        return repository.findAllByOwner(user)
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
-    public AccountResponseDto getAccountById(UUID id) {
-        Account account = findById(id);
-        return mapper.toDto(account);
-    }
-
-    @Override
-    public AccountResponseDto createAccount(AccountCreateDto dto) {
+    @Transactional
+    public AccountResponseDto create(AccountCreateDto dto) {
         User user = authService.getCurrentUser();
 
         Account account = Account.builder()
                 .bankName(dto.bankName())
-                .accountNumber(generateAccountNumber())
-                .balance(BigDecimal.ZERO)
                 .type(dto.type())
-                .currency(dto.currency())
                 .status(AccountStatus.ACTIVE)
+                .blocked(false)
                 .owner(user)
                 .build();
 
-        Account save = repository.save(account);
-        return mapper.toDto(save);
+        Account saved = repository.save(account);
+        return mapper.toDto(saved);
     }
 
     @Override
-    public AccountResponseDto changeStatus(UUID id, AccountStatus status) {
-        Account account = findById(id);
-        account.setStatus(status);
-        Account save = repository.save(account);
-        return mapper.toDto(save);
+    public AccountResponseDto block(UUID id) {
+        Account account = findAndCheck(id);
+        account.setBlocked(true);
+        return mapper.toDto(account);
+    }
+
+    @Override
+    public AccountResponseDto getAccount(UUID id) {
+
+        Account account =  findAndCheck(id);
+        return mapper.toDto(account);
+    }
+
+    @Override
+    public List<AccountResponseDto> getMyAccount() {
+        User user = authService.getCurrentUser();
+        return repository.findAllByOwner(user)
+                .stream().map(mapper::toDto)
+                .toList();
     }
 
     @Override
@@ -72,8 +70,15 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(()-> new RuntimeException(" Account not found by Id: " + id));
     }
 
+    private Account findAndCheck(UUID id){
+        User user = authService.getCurrentUser();
+        Account account = findById(id);
 
-    private String generateAccountNumber() {
-        return "ACC-" + UUID.randomUUID().toString().replace("-", "").substring(0, 16).toUpperCase();
+        if (!account.getOwner().getId().equals(user.getId())){
+            throw new RuntimeException("No access to account: " + id);
+        }
+
+        return account;
     }
+
 }

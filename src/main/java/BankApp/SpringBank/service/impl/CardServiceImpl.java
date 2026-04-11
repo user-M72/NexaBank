@@ -5,19 +5,18 @@ import BankApp.SpringBank.dto.res.card.CardResponseDto;
 import BankApp.SpringBank.mapper.CardMapper;
 import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.Card;
-import BankApp.SpringBank.model.Enum.AccountStatus;
+import BankApp.SpringBank.model.User;
 import BankApp.SpringBank.repository.CardRepository;
 import BankApp.SpringBank.service.AccountService;
 import BankApp.SpringBank.service.AuthService;
 import BankApp.SpringBank.service.CardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,52 +29,67 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardResponseDto createCard(CardCreateDto dto) {
+        User user = authService.getCurrentUser();
         Account account = accountService.findById(dto.accountId());
 
-        if (account.getStatus() != AccountStatus.ACTIVE){
-            throw new RuntimeException("Account is not active");
+        if (!account.getOwner().getId().equals(user.getId())){
+            throw new RuntimeException("No access to account ");
+        }
+
+        if (account.isBlocked()) {
+            throw new RuntimeException("Account is blocked");
         }
 
         Card card = Card.builder()
                 .cardNumber(generateCardNumber())
-                .cardHolderName(dto.cardHolderName())
-                .expiryDate(generateExpiryDate())
-                .cvvHash(hashCvv(generateCvv()))
-                .cardType(dto.cardType())
-                .dailyLimit(dto.dailyLimit())
-                .isActive(true)
+                .expirationDate(generateExpiryDate())
+                .balance(BigDecimal.ZERO)
+                .currency(dto.currency())
+                .blocked(false)
                 .account(account)
                 .build();
 
-        Card save = repository.save(card);
-        return mapper.toDto(save);
+        Card saved = repository.save(card);
+        return mapper.toDto(saved);
     }
 
     @Override
-    public List<CardResponseDto> getMyCards() {
-        return repository.findAllByAccount_Owner(authService.getCurrentUser())
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+    public CardResponseDto block(UUID id) {
+        Card card = findCardId(id);
+        card.setBlocked(true);
+        Card saved = repository.save(card);
+        return  mapper.toDto(saved);
     }
 
     @Override
-    public List<CardResponseDto> getCardsByAccount(UUID accountId) {
-        Account account = accountService.findById(accountId);
-        return repository.findAllByAccount(account)
+    public CardResponseDto unBlock(UUID id) {
+        Card card = findCardId(id);
+        card.setBlocked(false);
+        Card saved = repository.save(card);
+        return mapper.toDto(saved);
+    }
+
+    @Override
+    public List<CardResponseDto> get() {
+        return repository.findAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
     }
 
     @Override
-    public CardResponseDto blockCard(UUID cardId) {
-        Card card = repository.findById(cardId)
-                .orElseThrow(()-> new RuntimeException("Card not found by ID: " + cardId));
+    public List<CardResponseDto> getMyCards() {
+        User user = authService.getCurrentUser();
+        return repository.findAllByAccount_Owner(user)
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+    }
 
-        card.setActive(false);
-        Card save = repository.save(card);
-        return mapper.toDto(save);
+    @Override
+    public Card findCardId(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Card not found by ID: " + id));
     }
 
     private String generateCardNumber() {
@@ -89,13 +103,4 @@ public class CardServiceImpl implements CardService {
         LocalDate expiry = LocalDate.now().plusYears(3);
         return String.format("%02d/%d", expiry.getMonthValue(), expiry.getYear());
     }
-
-    private String generateCvv() {
-        return String.format("%03d", (int)(Math.random() * 1000));
-    }
-
-    private String hashCvv(String cvv) {
-        return BCrypt.hashpw(cvv, BCrypt.gensalt());
-    }
-
 }
