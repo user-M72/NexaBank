@@ -99,13 +99,16 @@ spring:
 
 ### 👤 Пользователи
 
-| Метод | URL | Описание | Доступ |
-|-------|-----|----------|--------|
-| GET | `/api/users/v1` | Все пользователи | ADMIN |
-| GET | `/api/users/v1/{id}` | Пользователь по ID | ADMIN |
-| POST | `/api/users/v1` | Создать пользователя | ADMIN |
-| PUT | `/api/users/v1/{id}` | Обновить пользователя | ADMIN |
-| DELETE | `/api/users/v1/{id}` | Удалить пользователя | ADMIN |
+| Метод  | URL                     | Описание                  | Доступ |
+|--------|-------------------------|---------------------------|--------|
+| GET    | `/api/users/v1`         | Все пользователи          | ADMIN  |
+| GET    | `/api/users/v1/{id}`    | Пользователь по ID        | ADMIN  |
+| POST   | `/api/users/v1`         | Создать пользователя      | ADMIN  |
+| PUT    | `/api/users/v1/{id}`    | Обновить пользователя     | ADMIN  |
+| DELETE | `/api/users/v1/{id}`    | Удалить пользователя      | ADMIN  |
+| GET    | `/api/users/v1/me`      | Мой профиль               | USER   |
+| PUT    | `/api/users/v1/me/update`   | Обновить профиль      | USER   |
+| PATCH  | `/api/users/v1/me/password` | Сменить пароль        | USER   |
 
 ### 🏦 Счета
 
