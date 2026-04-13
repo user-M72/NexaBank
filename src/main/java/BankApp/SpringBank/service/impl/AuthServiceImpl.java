@@ -1,6 +1,7 @@
 package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.config.CustomUserDetails;
+import BankApp.SpringBank.dto.TokenPairDto;
 import BankApp.SpringBank.dto.req.auth.Login;
 import BankApp.SpringBank.dto.req.auth.Register;
 import BankApp.SpringBank.dto.res.auth.AuthResponseDto;
@@ -33,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponseDto login(Login dto) {
+    public TokenPairDto login(Login dto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         dto.username(),
@@ -52,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public AuthResponseDto register(Register dto) {
+    public TokenPairDto register(Register dto) {
 
         if (userRepository.existsByUsername(dto.username())) {
             throw new UsernameAlreadyExistsException(dto.username());
@@ -83,8 +84,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponseDto refresh(String refreshToken) {
+    public TokenPairDto refresh(String refreshToken) {
 
+        if (jwtService.isTokenExpired(refreshToken)){
+            throw new RefreshTokenInvalidException();
+        }
         String username = jwtService.extractUsername(refreshToken);
 
         User user = userRepository.findByUsername(username)
@@ -111,12 +115,12 @@ public class AuthServiceImpl implements AuthService {
         return userDetails.getUser();
     }
 
-    private AuthResponseDto generateTokens(CustomUserDetails userDetails) {
+    private TokenPairDto generateTokens(CustomUserDetails userDetails) {
 
         String newAccessToken = jwtService.generateAccessToken(userDetails);
         String newRefreshToken = jwtService.generateRefreshToken(userDetails);
 
-        return new AuthResponseDto(newAccessToken, newRefreshToken);
+        return new TokenPairDto(newAccessToken, newRefreshToken);
 
     }
 }

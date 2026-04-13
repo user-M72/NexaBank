@@ -79,7 +79,7 @@ public class JwtService {
         return List.of();
     }
 
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 
@@ -95,4 +95,6 @@ public class JwtService {
     private SecretKey getSignKey(){
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
+
+
 }

@@ -1,5 +1,6 @@
 package BankApp.SpringBank.service;
 
+import BankApp.SpringBank.dto.TokenPairDto;
 import BankApp.SpringBank.dto.req.auth.Login;
 import BankApp.SpringBank.dto.req.auth.Register;
 import BankApp.SpringBank.dto.res.auth.AuthResponseDto;
@@ -7,11 +8,11 @@ import BankApp.SpringBank.model.User;
 
 public interface AuthService {
 
-    AuthResponseDto login(Login dto);
+    TokenPairDto login(Login dto);
 
-    AuthResponseDto register(Register dto);
+    TokenPairDto register(Register dto);
 
-    AuthResponseDto refresh(String refreshToken);
+    TokenPairDto refresh(String refreshToken);
 
     User getCurrentUser();
 }
