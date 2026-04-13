@@ -12,3 +12,4 @@ public record TransferRequestDto(
 
 ) {
 }
+// изменить на String cardId место UUID cardId

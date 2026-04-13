@@ -20,4 +20,6 @@ public interface CardService {
     List<CardResponseDto> getMyCards();
 
     Card findCardId(UUID id);
+
+    Card findByCardId(String cardNumber);
 }

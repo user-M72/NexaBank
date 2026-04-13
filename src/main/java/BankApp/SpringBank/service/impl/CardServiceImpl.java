@@ -93,6 +93,12 @@ public class CardServiceImpl implements CardService {
                 .orElseThrow(()-> new RuntimeException("Card not found by ID: " + id));
     }
 
+    @Override
+    public Card findByCardId(String cardNumber) {
+        return repository.findByCardId(cardNumber)
+                .orElseThrow(()-> new RuntimeException("Card not found: " + cardNumber));
+    }
+
     private String generateCardNumber() {
         return String.format("4444-%04d-%04d-%04d",
                 (int)(Math.random() * 10000),
