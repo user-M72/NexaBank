@@ -21,5 +21,5 @@ public interface CardService {
 
     Card findCardId(UUID id);
 
-    Card findByCardId(String cardNumber);
+    Card findByCardNumber(String cardNumber);
 }

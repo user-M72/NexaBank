@@ -94,8 +94,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card findByCardId(String cardNumber) {
-        return repository.findByCardId(cardNumber)
+    public Card findByCardNumber(String cardNumber) {
+        return repository.findByCardNumber(cardNumber)
                 .orElseThrow(()-> new RuntimeException("Card not found: " + cardNumber));
     }
 
