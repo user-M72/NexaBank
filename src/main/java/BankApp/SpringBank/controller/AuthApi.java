@@ -66,4 +66,12 @@ public class AuthApi {
 
         return ResponseEntity.ok(new AuthResponseDto(refresh.accessToken()));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response){
+
+        cookieService.clearRefreshTokenCookie(response);
+
+        return ResponseEntity.ok().build();
+    }
 }
