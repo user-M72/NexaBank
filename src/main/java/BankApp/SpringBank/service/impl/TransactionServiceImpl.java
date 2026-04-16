@@ -3,13 +3,16 @@ package BankApp.SpringBank.service.impl;
 import BankApp.SpringBank.dto.DepositRequestDto;
 import BankApp.SpringBank.dto.req.transfer.TransferRequestDto;
 import BankApp.SpringBank.dto.res.transaction.TransactionResponseDto;
+import BankApp.SpringBank.exception.AccountBlockedException;
+import BankApp.SpringBank.exception.CardBlockedException;
+import BankApp.SpringBank.exception.CardInsufficientFundsException;
+import BankApp.SpringBank.exception.CurrentNotUserCardException;
 import BankApp.SpringBank.mapper.TransactionMapper;
 import BankApp.SpringBank.model.Card;
 import BankApp.SpringBank.model.Enum.TransactionStatus;
 import BankApp.SpringBank.model.Enum.TransactionType;
 import BankApp.SpringBank.model.Transaction;
 import BankApp.SpringBank.model.User;
-import BankApp.SpringBank.repository.CardRepository;
 import BankApp.SpringBank.repository.TransactionRepository;
 import BankApp.SpringBank.service.AuthService;
 import BankApp.SpringBank.service.CardService;
@@ -28,7 +31,6 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository repository;
     private final TransactionMapper mapper;
     private final AuthService authService;
-    private final CardRepository cardRepository;
     private final CardService cardService;
 
     @Override
@@ -40,14 +42,14 @@ public class TransactionServiceImpl implements TransactionService {
         Card toCard = cardService.findCardId(dto.toCardId());
 
         if (!fromCard.getAccount().getOwner().getId().equals(user.getId())){
-            throw new RuntimeException("The card does not belong to the current user");
+            throw new CurrentNotUserCardException(user.getId());
         }
 
         validateCard(fromCard);
         validateCard(toCard);
 
         if (fromCard.getBalance().compareTo(dto.amount()) < 0) {
-            throw new RuntimeException("Insufficient funds on the card");
+            throw new CardInsufficientFundsException();
         }
 
         fromCard.setBalance(fromCard.getBalance().subtract(dto.amount()));
@@ -74,7 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
         Card card = cardService.findCardId(dto.cardId());
 
         if (!card.getAccount().getOwner().getId().equals(user.getId())){
-            throw new RuntimeException("The card does not belong to the current user");
+            throw new CurrentNotUserCardException(user.getId());
         }
 
         validateCard(card);
@@ -100,7 +102,7 @@ public class TransactionServiceImpl implements TransactionService {
         validateCard(card);
 
         if (card.getBalance().compareTo(dto.amount()) < 0) {
-            throw new RuntimeException("Insufficient funds on the card");
+            throw new CardInsufficientFundsException();
         }
 
         card.setBalance(card.getBalance().subtract(dto.amount()));
@@ -130,10 +132,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     private void validateCard(Card card) {
         if (card.isBlocked()) {
-            throw new RuntimeException("Карта заблокирована: " + card.getId());
+            throw new CardBlockedException(card.getId());
         }
         if (card.getAccount().isBlocked()) {
-            throw new RuntimeException("Аккаунт заблокирован: " + card.getAccount().getId());
+            throw new AccountBlockedException(card.getAccount().getId());
         }
     }
 

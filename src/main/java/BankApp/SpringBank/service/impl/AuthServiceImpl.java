@@ -4,7 +4,6 @@ import BankApp.SpringBank.config.CustomUserDetails;
 import BankApp.SpringBank.dto.TokenPairDto;
 import BankApp.SpringBank.dto.req.auth.Login;
 import BankApp.SpringBank.dto.req.auth.Register;
-import BankApp.SpringBank.dto.res.auth.AuthResponseDto;
 import BankApp.SpringBank.exception.*;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.model.User;

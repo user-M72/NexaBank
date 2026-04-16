@@ -2,6 +2,8 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.AccountCreateDto;
 import BankApp.SpringBank.dto.res.account.AccountResponseDto;
+import BankApp.SpringBank.exception.AccountBlockedException;
+import BankApp.SpringBank.exception.AccountNotFoundException;
 import BankApp.SpringBank.mapper.AccountMapper;
 import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.Enum.AccountStatus;
@@ -67,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findById(UUID id) {
         return repository.findById(id)
-                .orElseThrow(()-> new RuntimeException(" Account not found by Id: " + id));
+                .orElseThrow(()-> new AccountNotFoundException(id));
     }
 
     private Account findAndCheck(UUID id){
@@ -75,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = findById(id);
 
         if (!account.getOwner().getId().equals(user.getId())){
-            throw new RuntimeException("No access to account: " + id);
+            throw new AccountBlockedException(account.getOwner().getId());
         }
 
         return account;

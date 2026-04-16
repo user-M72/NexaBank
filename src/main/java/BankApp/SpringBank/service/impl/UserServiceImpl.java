@@ -5,6 +5,8 @@ import BankApp.SpringBank.dto.req.user.ProfileUpdateRequestDto;
 import BankApp.SpringBank.dto.req.user.UserRequestDto;
 import BankApp.SpringBank.dto.res.user.ProfileResponseDto;
 import BankApp.SpringBank.dto.res.user.UserResponseDto;
+import BankApp.SpringBank.exception.CurrentPasswordException;
+import BankApp.SpringBank.exception.PasswordNotMachException;
 import BankApp.SpringBank.exception.UserNotFoundException;
 import BankApp.SpringBank.mapper.ProfileMapper;
 import BankApp.SpringBank.mapper.UserMapper;
@@ -113,11 +115,11 @@ public class UserServiceImpl implements UserService {
         User user = authService.getCurrentUser();
 
         if (!passwordEncoder.matches(dto.currentPassword(), user.getPassword())) {
-            throw new RuntimeException("Current password is incorrect");
+            throw new CurrentPasswordException();
         }
 
         if (!dto.newPassword().equals(dto.confirmPassword())){
-            throw new RuntimeException("Passwords do not match");
+            throw new PasswordNotMachException(dto.newPassword());
         }
 
         user.setPassword(passwordEncoder.encode(dto.newPassword()));
