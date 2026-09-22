@@ -5,6 +5,7 @@ import BankApp.SpringBank.dto.TokenPairDto;
 import BankApp.SpringBank.dto.req.auth.Login;
 import BankApp.SpringBank.dto.req.auth.Register;
 import BankApp.SpringBank.dto.res.auth.AuthResponseDto;
+import BankApp.SpringBank.event.AuthEvent;
 import BankApp.SpringBank.exception.*;
 import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.model.User;
@@ -12,6 +13,7 @@ import BankApp.SpringBank.repository.RoleRepository;
 import BankApp.SpringBank.repository.UserRepository;
 import BankApp.SpringBank.service.AuthService;
 import BankApp.SpringBank.service.JwtService;
+import BankApp.SpringBank.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final KafkaProducerService kafkaProducerService;
 
     @Override
     public TokenPairDto login(Login dto) {
@@ -46,6 +49,13 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException(dto.username()));
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        kafkaProducerService.sendAuthEvent(AuthEvent.builder()
+                .userId(user.getId().toString())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .action("LOGIN")
+                .build());
 
         return generateTokens(userDetails);
 
@@ -78,6 +88,13 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        kafkaProducerService.sendAuthEvent(AuthEvent.builder()
+                .userId(user.getId().toString())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .action("REGISTERED")
+                .build());
 
         return generateTokens(userDetails);
 
