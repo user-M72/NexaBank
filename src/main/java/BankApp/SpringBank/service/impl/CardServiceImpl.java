@@ -2,9 +2,6 @@ package BankApp.SpringBank.service.impl;
 
 import BankApp.SpringBank.dto.CardCreateDto;
 import BankApp.SpringBank.dto.res.card.CardResponseDto;
-import BankApp.SpringBank.exception.AccountBlockedException;
-import BankApp.SpringBank.exception.CardNotFoundException;
-import BankApp.SpringBank.exception.CardNumberNorFoundException;
 import BankApp.SpringBank.mapper.CardMapper;
 import BankApp.SpringBank.model.Account;
 import BankApp.SpringBank.model.Card;
@@ -36,11 +33,11 @@ public class CardServiceImpl implements CardService {
         Account account = accountService.findById(dto.accountId());
 
         if (!account.getOwner().getId().equals(user.getId())){
-            throw new AccountBlockedException(account.getOwner().getId());
+            throw new RuntimeException("No access to account ");
         }
 
         if (account.isBlocked()) {
-            throw new AccountBlockedException(account.getId());
+            throw new RuntimeException("Account is blocked");
         }
 
         Card card = Card.builder()
@@ -93,13 +90,13 @@ public class CardServiceImpl implements CardService {
     @Override
     public Card findCardId(UUID id) {
         return repository.findById(id)
-                .orElseThrow(()-> new CardNotFoundException(id));
+                .orElseThrow(()-> new RuntimeException("Card not found by ID: " + id));
     }
 
     @Override
     public Card findByCardNumber(String cardNumber) {
         return repository.findByCardNumber(cardNumber)
-                .orElseThrow(()-> new CardNumberNorFoundException(cardNumber));
+                .orElseThrow(()-> new RuntimeException("Card not found: " + cardNumber));
     }
 
     private String generateCardNumber() {

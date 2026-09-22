@@ -49,6 +49,8 @@ dependencies {
 	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:3.0.1'
 	testImplementation("org.testcontainers:testcontainers")
 	testImplementation 'org.wiremock.integrations:wiremock-spring-boot:3.7.0'
+
+	implementation 'org.springframework.kafka:spring-kafka'
 }
 
 tasks.named('test') {
