@@ -31,10 +31,6 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
 
-  server:
-    port: ${PORT:8080}
-    forward-headers-strategy: framework
-
 spring doc:
   swagger-ui:
     path: /swagger-ui.html
