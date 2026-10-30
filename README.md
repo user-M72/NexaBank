@@ -5,7 +5,6 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-60%2B-brightgreen?style=flat-square)
 
 **NexaBank** — банковский REST API на Java 21 и Spring Boot: счета, карты, переводы между картами и аутентификация на JWT.
 
@@ -13,6 +12,25 @@
 
 > Демо работает на бесплатном хостинге: после простоя первый запрос может занять до минуты. Kafka на демо отключена.
 
+---
+
+## 🔑 Тестовые аккаунты (демо)
+
+Чтобы проверить все эндпоинты в Swagger, используй готовые демо-аккаунты:
+
+| Роль | Username | Password | Что доступно |
+|---|---|---|---|
+| ADMIN | `admin` | `admim` | всё: пользователи, роли, блокировка счетов |
+
+
+**Как авторизоваться в Swagger:**
+1. Выполни `POST /api/auth/v1/login` с username и password демо-аккаунта.
+2. Скопируй `accessToken` из ответа.
+3. Нажми **Authorize** вверху страницы и вставь токен (слово `Bearer` писать не нужно).
+4. Теперь эндпоинты с замочком доступны. Токен живёт 15 минут, потом залогинься снова.
+
+> Это публичная демо-база без реальных данных. Аккаунты можно использовать свободно,
+> а можно зарегистрировать собственного пользователя через `POST /api/auth/v1/register`.
 
 ---
 
@@ -42,7 +60,6 @@
 | Сообщения | Apache Kafka (Spring Kafka) |
 | Маппинг | MapStruct 1.5.5 |
 | Документация | Springdoc OpenAPI (Swagger UI) |
-| Тесты | JUnit 5, Mockito |
 | Сборка | Gradle |
 | Инфраструктура | Docker, Docker Compose |
 | Прочее | Lombok |
@@ -190,8 +207,6 @@ src/
 │   ├── repository/    # Spring Data репозитории
 │   ├── service/       # Интерфейсы и реализации сервисов
 │   └── util/          # DbPopulator — начальные данные при старте
-└── test/java/BankApp/SpringBank/
-    └── service/       # Юнит-тесты сервисов
 ```
 
 ---
@@ -205,11 +220,11 @@ src/
 - Проверка владельца: доступ только к своим счетам и картам
 - Секреты вынесены в переменные окружения, `.env` исключён из репозитория
 
-
 ---
 
 ## 🗺 Планы
 
+- [ ] Юнит-тесты сервисов (JUnit 5 + Mockito)
 - [ ] Интеграционные тесты с Testcontainers
 - [ ] Ротация refresh-токенов и blacklist при выходе
 - [ ] Блокировка строки счёта при конкурентных списаниях
