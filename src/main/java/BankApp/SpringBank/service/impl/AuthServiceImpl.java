@@ -50,12 +50,13 @@ public class AuthServiceImpl implements AuthService {
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        kafkaProducerService.sendAuthEvent(AuthEvent.builder()
-                .userId(user.getId().toString())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .action("LOGIN")
-                .build());
+        //TODO: включить когда будеть брокер КАФКА
+//        kafkaProducerService.sendAuthEvent(AuthEvent.builder()
+//                .userId(user.getId().toString())
+//                .username(user.getUsername())
+//                .email(user.getEmail())
+//                .action("LOGIN")
+//                .build());
 
         return generateTokens(userDetails);
 
@@ -89,12 +90,13 @@ public class AuthServiceImpl implements AuthService {
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        kafkaProducerService.sendAuthEvent(AuthEvent.builder()
-                .userId(user.getId().toString())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .action("REGISTERED")
-                .build());
+//        TODO: включить когда будеть брокер КАФКА
+//        kafkaProducerService.sendAuthEvent(AuthEvent.builder()
+//                .userId(user.getId().toString())
+//                .username(user.getUsername())
+//                .email(user.getEmail())
+//                .action("REGISTERED")
+//                .build());
 
         return generateTokens(userDetails);
 
