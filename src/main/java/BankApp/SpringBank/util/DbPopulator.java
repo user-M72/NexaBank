@@ -22,7 +22,9 @@ public class DbPopulator implements CommandLineRunner {
     public void run(String... args) {
         createdAdminRole();
         createdAdmin();
+        createDemoAdmin();
         createUserRole();
+        createUser();
     }
 
     private void createdAdminRole() {
@@ -48,6 +50,34 @@ public class DbPopulator implements CommandLineRunner {
     private void createUserRole() {
         if (!roleService.existsByName("USER")){
             roleService.create(new RoleRequestDto("USER", "Uses the app"));
+        }
+    }
+
+    private void createUser(){
+            if (!userService.existsByEmail("user@user.com")) {
+                Role user = roleService.getByName("USER");
+                userService.create(new UserRequestDto(
+                        "User",
+                        "User",
+                        "demo-user",
+                        "user@user.com",
+                        "demo-user",
+                        List.of(user.getId())
+                ));
+            }
+        }
+
+    private void createDemoAdmin(){
+        if (!userService.existsByEmail("demoAdmin@admin.com")){
+            Role demoAdmin = roleService.getByName("ADMIN");
+            userService.create(new UserRequestDto(
+                    "Demo-admin",
+                    "Demo-admin",
+                    "demo-admin",
+                    "demoAdmin@admin.com",
+                    "demo-admin",
+                    List.of(demoAdmin.getId())
+            ));
         }
     }
 }
