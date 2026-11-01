@@ -6,6 +6,7 @@ import BankApp.SpringBank.model.Role;
 import BankApp.SpringBank.service.RoleService;
 import BankApp.SpringBank.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,12 @@ public class DbPopulator implements CommandLineRunner {
 
     private final UserService userService;
     private final RoleService roleService;
+
+    @Value("${spring.app.admin.username}")
+    private String adminUsername;
+
+    @Value("${spring.app.admin.password}")
+    private String adminPassword;
 
     @Override
     public void run(String... args) {
@@ -39,9 +46,9 @@ public class DbPopulator implements CommandLineRunner {
             userService.create(new UserRequestDto(
                     "Admin",
                     "Admin",
-                    "admin",
+                    adminUsername,
                     "admin@admin.com",
-                    "admin",
+                    adminPassword,
                     List.of(admin.getId())
             ));
         }
@@ -59,9 +66,9 @@ public class DbPopulator implements CommandLineRunner {
                 userService.create(new UserRequestDto(
                         "User",
                         "User",
-                        "demo-user",
+                        "demoUser",
                         "user@user.com",
-                        "demo-user",
+                        "demoUser",
                         List.of(user.getId())
                 ));
             }
@@ -73,9 +80,9 @@ public class DbPopulator implements CommandLineRunner {
             userService.create(new UserRequestDto(
                     "Demo-admin",
                     "Demo-admin",
-                    "demo-admin",
+                    "demoAdmin",
                     "demoAdmin@admin.com",
-                    "demo-admin",
+                    "demoAdmin",
                     List.of(demoAdmin.getId())
             ));
         }
