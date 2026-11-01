@@ -8,7 +8,9 @@
 
 **NexaBank** — банковский REST API на Java 21 и Spring Boot: счета, карты, переводы между картами и аутентификация на JWT.
 
-🌐 **Live demo:** [Swagger UI](https://nexabank-26mc.onrender.com/swagger-ui/index.html)
+🌐 **Live demo:**
+- [Frontend](https://nexabank-front.muzaffarazamov007.workers.dev)
+- [Swagger UI](https://nexabank-26mc.onrender.com/swagger-ui/index.html)
 
 > Демо работает на бесплатном хостинге: первый запрос может занять до минуты. Kafka на демо отключена.
 
